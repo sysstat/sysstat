@@ -1,0 +1,169 @@
+#
+# This file configures collection of metrics from PCP DSO PMDAs alongside
+# the standard system-wide sysstat metrics.  Metrics are organized into
+# named groups that can be selectively enabled via sadc -S (e.g. -S PROC).
+# By default, groups are disabled; -S ALL or -S XALL enables all groups.
+#
+# When sadc is configured to write PCP archives (-O pcp or -O sa+pcp in
+# SADC_OPTIONS, see /etc/sysconfig/sysstat), enabled groups are collected
+# from a local PMDA context and stored in the same PCP archive.  This can
+# be used to record mpstat, iostat, pidstat, cifsstat and other metrics.
+#
+# Changes take effect on the next sadc restart.
+# See sysstat.pcpconf(5) and sadc(8) for details.
+
+# Maximum PCP archive data volume size before automatic rotation.
+# Supports k/m/g suffix.  Set to 0 to disable in-session rotation.
+volume_size = 100m
+
+#
+# Metric groups — each [HEADING] defines a group selectable via -S.
+# Non-leaf names (e.g. proc.psinfo) are expanded to all leaves beneath
+# them.  Metrics already collected by sadc's built-in path are silently
+# skipped to avoid double-writes.
+#
+
+[PROC]
+# Per-process metrics for pidstat -a replay.
+proc.nprocs
+proc.psinfo.utime
+proc.psinfo.stime
+proc.psinfo.guest_time
+proc.psinfo.processor
+proc.schedstat.run_delay
+proc.psinfo.minflt
+proc.psinfo.maj_flt
+proc.psinfo.vsize
+proc.psinfo.rss
+proc.memory.vmdata
+proc.memory.vmexe
+proc.memory.vmlib
+proc.memory.vmlock
+proc.memory.vmswap
+proc.memory.share
+proc.memory.vmstack
+proc.io.read_bytes
+proc.io.write_bytes
+proc.io.cancelled_write_bytes
+proc.psinfo.vctxsw
+proc.psinfo.nvctxsw
+proc.psinfo.threads
+proc.fd.count
+proc.psinfo.rt_priority
+proc.psinfo.policy
+proc.psinfo.pid
+proc.psinfo.cmd
+proc.psinfo.psargs
+proc.psinfo.wchan_s
+proc.psinfo.nice
+proc.psinfo.priority
+proc.psinfo.start_time
+proc.id.uid
+proc.id.uid_nm
+proc.id.euid
+proc.id.euid_nm
+proc.id.gid
+proc.id.egid
+proc.namespaces.envid
+
+[TAPE]
+# Tape drive statistics for tapestat -a replay.
+tape.dev.read_cnt
+tape.dev.read_byte_cnt
+tape.dev.read_ns
+tape.dev.write_cnt
+tape.dev.write_byte_cnt
+tape.dev.write_ns
+tape.dev.other_cnt
+tape.dev.resid_cnt
+tape.dev.io_ns
+
+[IOSTAT]
+# Per-device disk statistics for iostat -a replay.
+disk.dev.read
+disk.dev.write
+disk.dev.total
+disk.dev.total_bytes
+disk.dev.read_bytes
+disk.dev.write_bytes
+disk.dev.discard_bytes
+disk.dev.read_rawactive
+disk.dev.write_rawactive
+disk.dev.total_rawactive
+disk.dev.discard_rawactive
+disk.dev.avactive
+disk.dev.aveq
+disk.dev.blkread
+disk.dev.blkwrite
+disk.dev.discard
+# Per-DM-device statistics for iostat -a replay.
+disk.dm.read
+disk.dm.write
+disk.dm.total
+disk.dm.total_bytes
+disk.dm.read_bytes
+disk.dm.write_bytes
+disk.dm.discard_bytes
+disk.dm.read_rawactive
+disk.dm.write_rawactive
+disk.dm.total_rawactive
+disk.dm.discard_rawactive
+disk.dm.avactive
+disk.dm.aveq
+disk.dm.blkread
+disk.dm.blkwrite
+disk.dm.discard
+# Per-MD-device statistics for iostat -a replay.
+disk.md.read
+disk.md.write
+disk.md.total
+disk.md.total_bytes
+disk.md.read_bytes
+disk.md.write_bytes
+disk.md.discard_bytes
+disk.md.read_rawactive
+disk.md.write_rawactive
+disk.md.total_rawactive
+disk.md.discard_rawactive
+disk.md.avactive
+disk.md.aveq
+disk.md.blkread
+disk.md.blkwrite
+disk.md.discard
+
+[CIFS]
+# CIFS/SMB filesystem statistics for cifsiostat -a replay.
+cifs.fs.read
+cifs.fs.read_bytes
+cifs.fs.write
+cifs.fs.write_bytes
+cifs.ops.open
+cifs.ops.close
+cifs.ops.delete
+
+[NUMA]
+# Per-NUMA-node CPU and memory statistics.
+kernel.pernode.cpu.user
+kernel.pernode.cpu.nice
+kernel.pernode.cpu.sys
+kernel.pernode.cpu.idle
+kernel.pernode.cpu.wait.total
+kernel.pernode.cpu.irq.hard
+kernel.pernode.cpu.irq.soft
+kernel.pernode.cpu.steal
+kernel.pernode.cpu.guest
+mem.numa.util.free
+mem.numa.util.total
+mem.numa.util.active
+mem.numa.util.inactive
+mem.numa.util.dirty
+mem.numa.util.filePages
+mem.numa.util.slab
+mem.numa.util.shmem
+
+[HINV]
+# Hardware inventory and device mappings.
+hinv.nnode
+hinv.map.cpu_node
+hinv.map.dmname
+hinv.map.mdname

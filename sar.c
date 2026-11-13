@@ -32,6 +32,9 @@
 #include "version.h"
 #include "sa.h"
 
+#include "pcp_stats.h"
+#include "pcp_sar.h"
+
 #ifdef USE_NLS
 #include <locale.h>
 #include <libintl.h>
@@ -64,8 +67,6 @@ int xinit = FALSE;
 int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
 int arch_64 = FALSE;
-/* Number of decimal places */
-int dplaces_nr = -1;
 
 /* sar always displays timestamps in local time */
 uint64_t flags = S_F_LOCAL_TIME;
@@ -136,6 +137,7 @@ void usage(char *progname)
 			  "[ --int=<int_list> ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
 			  "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ -a <archive> ]\n"
 			  "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 			  "[ -i <interval> ] [ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"));
 	exit(1);
@@ -667,7 +669,7 @@ __print_funct_t print_sar_comment(int *tab, int action, char *cur_date, char *cu
  */
 void read_sadc_stat_bunch(int curr)
 {
-	int i, p;
+	int i, j, p;
 
 	/* Read record header (type is always R_STATS since it is read from sadc) */
 	if (sa_read(&record_hdr[curr], RECORD_HEADER_SIZE)) {
@@ -719,7 +721,22 @@ void read_sadc_stat_bunch(int curr)
                                    (size_t) act[p]->fsize * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2);
                         }
                 }
-		if (sa_read(act[p]->buf[curr],
+		if (act[p]->msize > act[p]->fsize) {
+			/*
+			 * sadc writes fsize bytes per element at msize stride
+			 * (see write_stats()), so read it back the same way.
+			 */
+			for (j = 0; j < act[p]->nr[curr] * act[p]->nr2; j++) {
+				if (sa_read((char *) act[p]->buf[curr] + j * act[p]->msize,
+					    (size_t) act[p]->fsize)) {
+#ifdef DEBUG
+					fprintf(stderr, "%s: Statistics\n", __FUNCTION__);
+#endif
+					print_read_error(END_OF_DATA_UNEXPECTED);
+				}
+			}
+		}
+		else if (sa_read(act[p]->buf[curr],
 			    (size_t) act[p]->fsize * (size_t) act[p]->nr[curr] * (size_t) act[p]->nr2)) {
 #ifdef DEBUG
 			fprintf(stderr, "%s: Statistics\n", __FUNCTION__);
@@ -1013,13 +1030,13 @@ void read_header_data(void)
 
 /*
  ***************************************************************************
- * Read statistics from a system activity data file.
+ * Read statistics from a raw system activity data file.
  *
  * IN:
  * @from_file	Input file name.
  ***************************************************************************
  */
-void read_stats_from_file(char from_file[])
+void read_stats_from_rawfile(char from_file[])
 {
 	struct file_magic file_magic;
 	struct file_activity *file_actlst = NULL;
@@ -1191,6 +1208,22 @@ void read_stats_from_file(char from_file[])
 	close(ifd);
 
 	free(file_actlst);
+}
+
+/*
+ ***************************************************************************
+ * Read statistics from any system activity data file.
+ *
+ * IN:
+ * @from_file	Input file name.
+ ***************************************************************************
+ */
+void read_stats_from_file(char from_file[])
+{
+	if (try_read_stats_from_pcpfile(from_file, flags))
+		return;
+
+	read_stats_from_rawfile(from_file);
 }
 
 /*
@@ -1445,6 +1478,16 @@ int main(int argc, char **argv)
 			else {
 				strcpy(to_file, "-");
 			}
+		}
+
+		else if (!strcmp(argv[opt], "-a")) {
+			/* Explicitly read from a PCP archive (common PCP arg) */
+			if (from_file[0] || day_offset)
+				usage(argv[0]);
+			if (!argv[++opt] || !strncmp(argv[opt], "-", 1))
+				usage(argv[0]);
+			snprintf(from_file, sizeof(from_file), "%s", argv[opt++]);
+			flags |= S_F_PCP_INPUT;
 		}
 
 		else if (!strcmp(argv[opt], "-f")) {

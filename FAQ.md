@@ -54,6 +54,14 @@
 [4.3.](#4_3) pidstat doesn't display statistics for process (task) _xyz_...  
 [4.4.](#4_4) I noticed that the total CPU utilization for threads running on an individual CPU can exceed 100%...  
 
+**[5. Questions related to PCP archive mode](#pcp)**
+
+[5.1.](#5_1) How do I enable PCP archive output alongside (or instead of) native sa files?  
+[5.2.](#5_2) Per-device disk metrics are missing from my PCP archives.  
+[5.3.](#5_3) My PCP archives use short day-of-month names (sa26) rather than dated names (sa20260626).  
+[5.4.](#5_4) What sampling interval should I use for PCP archives, and how do I change it?  
+[5.5.](#5_5) How do I configure PCP-specific options such as data volume rotation and additional metrics?  
+
 ---
 
 ### 1. General questions<a name="general"></a>
@@ -782,6 +790,131 @@ when the statistics are actually displayed. This doesn't mean that the task
 has spent its whole interval of time attached to it. Hence the CPU ressource
 used by a thread on an interval of time as displayed by pidstat may have
 concerned several processors.
+
+---
+### 5. Questions related to PCP archive mode<a name="pcp"></a>
+
+---
+5.1.<a name="5_1"></a> How do I enable PCP archive output alongside (or instead of) native sa files?
+
+A: Add the `-O` option to `SADC_OPTIONS` in `/etc/sysconfig/sysstat` (or your platform's
+equivalent sysstat configuration file).  For best results, also use `-D` (long date-stamped
+filenames) and `-S XALL` (all optional activities):
+
+```
+# Write both native sa files and PCP archives:
+SADC_OPTIONS="-S XALL -D -O sa+pcp"
+
+# Write PCP archives only (no native sa files):
+SADC_OPTIONS="-S XALL -D -O pcp"
+```
+
+PCP archives are written to the same directory as native sa files (`/var/log/sa` by default),
+using the same base name. For example, `sa20260626` produces `sa20260626.0`,
+`sa20260626.meta`, and `sa20260626.index` alongside it.
+
+---
+5.2.<a name="5_2"></a> Per-device disk metrics are missing from my PCP archives.
+
+A: There are two ways to include per-device disk statistics in PCP archives.
+
+**Option 1 — Enable the disk activity in sadc:**  Per-device disk statistics
+(`disk.dev.*`, `disk.part.*`, etc.) require the disk activity to be explicitly enabled.
+Add `-S XDISK` (or `-S XALL` for all extended statistics) to `SADC_OPTIONS`:
+
+```
+SADC_OPTIONS="-D -S XDISK"
+```
+
+`-S XDISK` enables per-device disk and partition statistics.  `-S XALL` enables all optional
+activities including disk, interrupts, IPv6 network, and power management metrics.
+
+**Option 2 — Collect disk metrics via the local linux PMDA:**  Add `disk.dev` (or individual
+metric names) to the `[metrics]` section of `/etc/sysconfig/sysstat.pcpconf`.  This records
+disk metrics through the PCP local PMDA path rather than sadc's built-in activity, and does
+not require changes to `SADC_OPTIONS`.  See question 5.5 for details on `sysstat.pcpconf`.
+
+Without one of the above, tools such as `pcp-iostat` that read PCP archives will report no
+per-device data, and PCP's built-in derived metrics (e.g. `disk.dev.await`) will produce
+semantic warnings when an archive is queried with `pminfo -a`.
+
+---
+5.3.<a name="5_3"></a> My PCP archives use short day-of-month names (sa26) rather than dated names (sa20260626).
+
+A: Long YYYYMMDD names are only used when `HISTORY` is greater than 28 days or when `-D` is
+explicitly set in `SADC_OPTIONS`.  Add `-D` to `SADC_OPTIONS`:
+
+```
+SADC_OPTIONS="-D -S XDISK"
+```
+
+Long names are strongly recommended for PCP archives because PCP tools and log management
+utilities identify archives by their timestamp-based names, and short names (sa01–sa31) are
+reused each month.
+
+---
+5.4.<a name="5_4"></a> What sampling interval should I use for PCP archives, and how do I change it?
+
+A: The default systemd collection timer fires every **10 minutes**.  For performance analysis
+with PCP tools this is usually too coarse — a 10 or 30 second interval is more useful.
+
+To change the interval, create a systemd drop-in for the collection timer:
+
+```
+# /etc/systemd/system/sysstat-collect.timer.d/interval.conf
+[Timer]
+OnCalendar=
+OnCalendar=*:*:0/10
+```
+
+This example sets a 10-second interval.  After saving, run:
+
+```
+systemctl daemon-reload
+systemctl restart sysstat-collect.timer
+```
+
+Note that shorter intervals combined with detailed metrics (especially per-process `proc.*`
+data) cause archives to grow very quickly.  Enable data volume rotation in
+`/etc/sysconfig/sysstat.pcpconf` (see question 5.5) to keep individual volume files
+manageable throughout the day.
+
+---
+5.5.<a name="5_5"></a> How do I configure PCP-specific options such as data volume rotation and additional metrics?
+
+A: The file `/etc/sysconfig/sysstat.pcpconf` controls PCP-specific collection behaviour.
+It is read by sadc at startup; changes take effect on the next sadc invocation.
+
+**Data volume rotation** — when sysstat is configured for PCP recording with a short sampling
+interval and detailed metrics (such as per-process `proc.*` data), archives grow rapidly and
+an archive that runs all day can become very large.  Data volume rotation splits the archive
+into a series of numbered volumes (`sa20260626.0`, `sa20260626.1`, …) during the day.
+Completed volumes are compressed automatically, keeping disk usage manageable without waiting
+for the end-of-day `sa2` run.  Enable rotation at 100 MB (the installed default):
+
+```
+[settings]
+volume_size = 104857600
+```
+
+**Additional metrics** — the `[metrics]` section lists extra metric names to collect from
+the local PCP PMDA context.  The default set covers per-process statistics needed by
+`pcp-pidstat`.  This is also a way to add per-device disk metrics without modifying
+`SADC_OPTIONS` (see question 5.2):
+
+```
+[metrics]
+disk.dev
+```
+
+Use `pminfo -L` to browse available metrics, for example:
+
+```
+pminfo -L --desc --oneline proc.psinfo
+pminfo -L disk.dev
+```
+
+See `sysstat.pcpconf(5)` for the full file format reference.
 
 ---
 Sebastien Godard (sysstat at orange dot fr) is the author and the current

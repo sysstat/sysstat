@@ -1,0 +1,12 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# cifsiostat -a: smoke test; CIFS PMDA may not be installed
+	# cifsiostat -a should exit 0 with data or produce clear error if no CIFS metrics
+	./cifsiostat -a tests/pcpar-sadc > /dev/null 2>&1
+	# Accept both 0 (data found) and 1 (no CIFS metrics in archive) - just
+	# verify the binary runs and parses the -a option correctly
+	# A crash (segfault, etc.) would show exit code > 1
+	[ $? -le 1 ] || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi

@@ -139,6 +139,30 @@ manual page), you can select some additional data which are going to be saved in
 daily data files.
 These options are used only when a new data file is created. They will be
 ignored with an already existing one.
+.IP
+To enable PCP (Performance Co-Pilot) archive output, add
+.B "\-O sa+pcp"
+to write both native and PCP archives simultaneously, or
+.B "\-O pcp"
+to write PCP archives only.
+For best results with PCP, also use
+.B \-D
+(long date-stamped filenames) and
+.B "\-S XALL"
+(all optional activities).
+For example:
+.IR "SADC_OPTIONS=""\-S XALL \-D \-O sa+pcp""" .
+When PCP output is active, metrics from any installed PCP DSO PMDA are
+also collected and archived alongside the standard system-wide metrics,
+including per-process statistics, CIFS filesystem statistics, and tape
+drive statistics, as configured in
+.IR sysstat.pcpconf (5).
+These archived metrics can be replayed with
+.BR "pidstat \-a" ", " "cifsiostat \-a" ", " "tapestat \-a"
+and the other sysstat tools' new
+.B \-a
+option.
+Requires sysstat built with PCP support (HAVE_PMI_APPEND).
 .TP
 .B UMASK
 .RB "The " "sa1" " and " "sa2"
@@ -164,6 +188,13 @@ Program used to compress data and report files.
 
 .SH FILE
 .I @SYSCONFIG_DIR@/sysstat
+.br
+.I @SYSCONFIG_DIR@/sysstat.pcpconf
+.RS
+See
+.BR sysstat.pcpconf (5)
+for the PCP local metric collection configuration.
+.RE
 
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)

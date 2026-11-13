@@ -61,8 +61,6 @@ long interval = -1, count = 0;
 int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
 int arch_64 = FALSE;
-/* Number of decimal places */
-int dplaces_nr = -1;
 /* Color palette number */
 int palette = SVG_DEFAULT_COL_PALETTE;
 
@@ -1622,6 +1620,31 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 	struct file_activity *file_actlst = NULL;
 	struct tstamp_ext rectime;
 	int ifd, tab = 0;
+
+#ifdef HAVE_PCP
+	int ctx;
+
+	/*
+	 * Heuristic used here as usability improvement - first try
+	 * opening dfile as PCP archive then fallback to sa format.
+	 */
+	if ((ctx = pmNewContext(PM_CONTEXT_ARCHIVE, dfile)) >= 0) {
+		/*
+		 * Perform required allocations: allocate_structures() is
+		 * called from inside read_stats_from_pcpfile_sadf(), and
+		 * after check_pcpfile_actlist() has set nr_ini values.
+		 */
+
+		if (SET_LC_NUMERIC_C(fmt[f_position]->options))
+			/* Use a decimal point */
+			setlocale(LC_NUMERIC, "C");
+
+		read_stats_from_pcpfile_sadf(ctx, dfile);
+		pmDestroyContext(ctx);
+		free_structures(act);
+		return;
+	}
+#endif /* HAVE_PCP */
 
 	/* Prepare file for reading and read its headers */
 	check_file_actlst(&ifd, dfile, act, flags, &file_magic, &file_hdr,

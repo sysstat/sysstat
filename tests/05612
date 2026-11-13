@@ -1,0 +1,8 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sadf -g (SVG) reading from PCP archive — check for valid SVG output
+	LC_ALL=C TZ=GMT ./sadf -g tests/pcpar -- -u > tests/out.sadf-pcp-g.tmp 2>/dev/null
+	grep -q "<svg\|<?xml" tests/out.sadf-pcp-g.tmp || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi

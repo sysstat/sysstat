@@ -24,7 +24,7 @@
 #define I_D_PRETTY		0x001000
 #define I_D_PERSIST_NAME	0x002000
 #define I_D_OMIT_SINCE_BOOT	0x004000
-/* Unused			0x008000 */
+#define I_D_PCP_ARCHIVE		0x008000
 #define I_D_DEVMAP_NAME		0x010000
 /* Unused			0x020000 */
 #define I_D_GROUP_TOTAL_ONLY	0x040000

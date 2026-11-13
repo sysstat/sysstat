@@ -55,6 +55,8 @@
 #define F_TOPOLOGY	0x10
 /* Indicate that option -H has been used */
 #define F_OPTION_H	0x20
+/* Indicate that option -a has been used */
+#define F_OPTION_a	0x40
 
 #define USE_OPTION_P(m)		(((m) & F_OPTION_P) == F_OPTION_P)
 #define USE_OPTION_A(m)		(((m) & F_OPTION_A) == F_OPTION_A)
@@ -62,6 +64,7 @@
 #define USE_OPTION_N(m)		(((m) & F_OPTION_N) == F_OPTION_N)
 #define DISPLAY_TOPOLOGY(m)	(((m) & F_TOPOLOGY) == F_TOPOLOGY)
 #define USE_OPTION_H(m)		(((m) & F_OPTION_H) == F_OPTION_H)
+#define USE_OPTION_a(m)		(((m) & F_OPTION_a) == F_OPTION_a)
 
 #define K_SUM	"SUM"
 #define K_CPU	"CPU"
@@ -106,5 +109,16 @@ struct cpu_topology {
 	int phys_package_id;
 	int logical_core_id;
 };
+
+extern struct stats_cpu    *st_cpu[3];
+extern unsigned long long   uptime_cs[3];
+extern struct tm            mp_tstamp[3];
+extern int                  cpu_nr;
+extern uint64_t             actflags;
+extern uint64_t             xflags;
+extern uint64_t             flags;
+extern unsigned char       *cpu_bitmap;
+
+extern void write_stats(int curr, int dis);
 
 #endif

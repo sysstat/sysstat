@@ -1,0 +1,8 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sar -b (I/O) and -q (queue/load) reading from PCP archive
+	LC_ALL=C TZ=GMT ./sar -q -f tests/pcpar > tests/out.sar-pcp-q.tmp 2>/dev/null
+	grep -q "runq-sz\|ldavg-1\|plist-sz" tests/out.sar-pcp-q.tmp || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi

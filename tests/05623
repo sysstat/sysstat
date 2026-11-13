@@ -1,0 +1,12 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# iostat -a reads disk metrics from existing PCP archive
+	if pminfo -a tests/pcpar-sadc disk.dev.read > /dev/null 2>&1; then
+		LC_ALL=C TZ=GMT ./iostat -a tests/pcpar-sadc > tests/out.iostat-pcp-x.tmp 2>/dev/null
+		test $? -eq 0 || exit 1
+	else
+		echo "No disk metrics in archive - skipped"
+	fi
+else
+	echo Skipped; touch tests/SKIPPED
+fi

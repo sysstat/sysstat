@@ -1,0 +1,8 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sar -d (disk) reading from PCP archive
+	LC_ALL=C TZ=GMT ./sar -d -f tests/pcpar > tests/out.sar-pcp-d.tmp 2>/dev/null
+	grep -q "DEV\|tps\|rkB/s" tests/out.sar-pcp-d.tmp || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi
