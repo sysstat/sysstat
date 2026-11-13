@@ -1,7 +1,7 @@
 # Select only an offline CPU
 . tests/variables
 if [ ! -z "$VER_JSON" ]; then
-	./sadf -J tests/data-CPUoff.tmp -- -A -P 8 | tests/check_ndjson.sh >/dev/null
+	./sadf -J tests/data-CPUoff.tmp -- -A -P 8 | ${T_SRCDIR}/tests/check_ndjson.sh >/dev/null
 else
 	echo Skipped
 	touch tests/SKIPPED

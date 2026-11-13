@@ -2,7 +2,7 @@
 if [ ! -z "$VER_JSON" ]; then
 	rm -f tests/root
 	ln -s ${T_SRCDIR}/tests/root6 tests/root
-	./cifsiostat -o NDJSON 1 1 | tests/check_ndjson.sh >/dev/null
+	./cifsiostat -o NDJSON 1 1 | ${T_SRCDIR}/tests/check_ndjson.sh >/dev/null
 else
 	echo Skipped
 	touch tests/SKIPPED
