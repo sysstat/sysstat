@@ -1199,7 +1199,8 @@ char *get_persistent_name_from_pretty(char *pretty)
 char *get_pretty_name_from_persistent(char *persistent)
 {
 	ssize_t r;
-	char *link, *pretty, target[PATH_MAX];
+	char *link, *pretty;
+	static char target[PATH_MAX];
 
 	/* Get absolute path for persistent name */
 	link = get_persistent_name_path(persistent);
