@@ -140,7 +140,7 @@ char *get_dm_name_from_registered_name(char *registered_name)
 {
 	int n;
 	char filen[PATH_MAX];
-	char target[PATH_MAX];
+	static char target[PATH_MAX];
 
 	/*
 	 * The registered device name is a symlink pointing at its device mapper name
