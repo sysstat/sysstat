@@ -100,20 +100,20 @@ NOTES:
 00170	LC_ALL=C TZ=GMT ./sar --pretty -d -f tests/data.tmp > tests/out.sar-pretty.tmp
 
 =====	sar: Playing with environment variables
-00180	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS= ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-ISO.tmp
-00184	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-never.tmp
-00188	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=auto ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-auto.tmp
-00190	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:H=31;1:I=32;22:M=35;1:N=34;1:R=31;22:Z=36;22" ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-always.tmp
-00191	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:C=34|21:X=31;1:a=:I=32;22:C=33;22;153;12;134;156;211:W=35;1:N=34;1:R=31;22:Z=36;22" ./sar -q MEM -Bu -P 0,3 -d --dev=sda --getenv -f tests/data-new.tmp > tests/out1.sar-always.tmp
-00192	LC_ALL=C TZ=GMT S_REPEAT_HEADER=2 ./sar --getenv -f tests/data-new.tmp > tests/out.sar-rep_hdr.tmp
-00193	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="+=33;22:-=35;1" ./sar -m BAT --getenv -f tests/data-new.tmp > tests/out2.sar-always.tmp
-00194	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="R=35;3;4:a=12;3::C=38;2;171;117;146:Z=36;7" ./sar -C -u --getenv -f tests/data.tmp > tests/out3.sar-always.tmp
+00180	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS= S_REPEAT_HEADER= ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-ISO.tmp
+00184	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never S_REPEAT_HEADER= ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-never.tmp
+00188	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=auto S_REPEAT_HEADER= ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-auto.tmp
+00190	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:H=31;1:I=32;22:M=35;1:N=34;1:R=31;22:Z=36;22" S_REPEAT_HEADER= ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-always.tmp
+00191	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:C=34|21:X=31;1:a=:I=32;22:C=33;22;153;12;134;156;211:W=35;1:N=34;1:R=31;22:Z=36;22" S_REPEAT_HEADER= ./sar -q MEM -Bu -P 0,3 -d --dev=sda --getenv -f tests/data-new.tmp > tests/out1.sar-always.tmp
+00192	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS= S_REPEAT_HEADER=2 ./sar --getenv -f tests/data-new.tmp > tests/out.sar-rep_hdr.tmp
+00193	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="+=33;22:-=35;1" S_REPEAT_HEADER= ./sar -m BAT --getenv -f tests/data-new.tmp > tests/out2.sar-always.tmp
+00194	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="R=35;3;4:a=12;3::C=38;2;171;117;146:Z=36;7" S_REPEAT_HEADER= ./sar -C -u --getenv -f tests/data.tmp > tests/out3.sar-always.tmp
 
 =====	sar: Playing with sa1 and sa2 shell scripts
 00200	TZ=GMT ./sa1 --boot; TZ=GMT ./sa1 --unix_time=1555593629 1 1; TZ=GMT ./sa1 --unix_time=1555593649 1 1
 00205	LC_ALL=C TZ=GMT ./sar -f tests/sa18 > tests/out.sa1.tmp
-00220	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out.sa2.tmp && rm -f tests/sa${DATE}
-00225	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out2.sa2.tmp && rm -f tests/sa${DATE}
+00220	LC_ALL=C TZ=GMT YESTERDAY= REPORTS= LONG_NAME= ./sa2 -A && mv tests/sar${DATE} tests/out.sa2.tmp && rm -f tests/sa${DATE}
+00225	LC_ALL=C TZ=GMT YESTERDAY= REPORTS= ./sa2 -A && mv tests/sar${DATE} tests/out2.sa2.tmp && rm -f tests/sa${DATE}
 	[ABOVE: Using sysstat.sysconfig-SADC_OPTION-D as sysstat.sysconfig file]
 00230	TZ=GMT ./cron/sysstat.sleep post hibernate
 00235	LC_ALL=C TZ=GMT ./sar -f tests/sa01 -C > tests/out.sa1-sleep.tmp
@@ -223,7 +223,7 @@ NOTES:
 00542	LC_ALL=C TZ=GMT ./sadf -O height=370 -g tests/data.tmp > tests/out3.sadf-g.tmp
 00545	LC_ALL=C TZ=GMT ./sadf -g tests/data.tmp -- -F MOUNT > tests/out1.sadf-g.tmp
 00550	LC_ALL=C TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp
-00555	LC_ALL=C TZ=GMT S_COLORS_PALETTE="0=000000:1=1a1aff:2=1affb2:3=b21aff:4=1ab2ff:5=ff1a1a:6=ffb31a:7=b2ff1a:8=efefef:9=000000:A=1a1aff:B=1affb2:C=b21aff:D=1ab2ff:E=ff1a1a:F=ffb31a:G=cc3300:H=000000:I=000000:K=ffffff:L=000000:T=000000:W=000000:X=000000" ./sadf -g --getenv -O customcol tests/data.tmp -C > tests/out.sadf-g-cc.tmp
+00555	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS_PALETTE="0=000000:1=1a1aff:2=1affb2:3=b21aff:4=1ab2ff:5=ff1a1a:6=ffb31a:7=b2ff1a:8=efefef:9=000000:A=1a1aff:B=1affb2:C=b21aff:D=1ab2ff:E=ff1a1a:F=ffb31a:G=cc3300:H=000000:I=000000:K=ffffff:L=000000:T=000000:W=000000:X=000000" ./sadf -g --getenv -O customcol tests/data.tmp -C > tests/out.sadf-g-cc.tmp
 00560	LC_ALL=C TZ=GMT ./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
 00570	./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp
 00580	LC_ALL=C ./sadf -d -s 13:20:20 -e 13:20:40 --iface=enp6s0 --dev=sda --fs=/dev/sda6 tests/data.tmp -- -n DEV -Fdp > tests/out.sadf-se.tmp
@@ -270,7 +270,7 @@ NOTES:
 00740	LC_ALL=C TZ=GMT ./sar -C -f tests/data-non-printable > tests/out.sar-non-printable.tmp
 
 =====	Reading data.tmp using an old sysstat version
-00750	LC_ALL=C TZ=GMT ./tests/ini/inisar -C -A -f tests/data.tmp > tests/out.data-ini.tmp
+00750	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS= ./tests/ini/inisar -C -A -f tests/data.tmp > tests/out.data-ini.tmp
 	[There may be some small differences in ext disks stats between initial and current version
 	outputs, because initial version doesn't take into account discard fields]
 
