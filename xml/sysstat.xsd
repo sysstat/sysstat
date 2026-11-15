@@ -712,8 +712,8 @@
 <xs:element name="temp" type="temp-type"></xs:element>
 <xs:complexType name="temp-type">
 	<xs:attribute name="number" type="xs:nonNegativeInteger" use="required"></xs:attribute>
-	<xs:attribute name="degC" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="percent-temp" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="degC" type="negative-hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="percent-temp" type="negative-hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="device" type="xs:string" use="required"></xs:attribute>
 </xs:complexType>
 
@@ -734,8 +734,8 @@
 <xs:element name="in" type="in-type"></xs:element>
 <xs:complexType name="in-type">
 	<xs:attribute name="number" type="xs:nonNegativeInteger" use="required"></xs:attribute>
-	<xs:attribute name="inV" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="percent-in" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="inV" type="negative-hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="percent-in" type="negative-hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="device" type="xs:string" use="required"></xs:attribute>
 </xs:complexType>
 

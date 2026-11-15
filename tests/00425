@@ -1,0 +1,8 @@
+. tests/variables
+if [ ! -z "$VER_XML" ]; then
+	export LC_ALL=C
+	cat ${T_SRCDIR}/tests/data-12.8.1-neg-sensors.xml | $VER_XML --schema ${T_SRCDIR}/xml/sysstat.xsd - >/dev/null
+else
+	echo Skipped
+	touch tests/SKIPPED
+fi

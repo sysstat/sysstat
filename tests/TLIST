@@ -207,6 +207,7 @@ NOTES:
 00412	export LC_ALL=C ; ./sadf -x tests/data-CPUoff.tmp -- -A -P 8 | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 00415	export LC_ALL=C ; ./sadf -Hx tests/data.tmp -C | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 00420	export LC_ALL=C ; cat tests/data-12.7.6.xml | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+00425	export LC_ALL=C ; cat tests/data-12.8.1-neg-sensors.xml | $VER_XML --schema xml/sysstat.xsd - >/dev/null
 00430	export LC_ALL=C ; cat tests/data-12.7.6.xml | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 
 =====	Checking sadf output
