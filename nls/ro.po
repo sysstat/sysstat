@@ -19,14 +19,15 @@
 # Corecturi pentru versiunea 12.7.2, făcute de R-GC, sep-2023.
 # Actualizare a traducerii pentru versiunea 12.7.7, făcută de R-GC, feb-2025.
 # Actualizare a traducerii pentru versiunea 12.8.0, făcută de R-GC, iun-2026.
+# Actualizare a traducerii pentru versiunea 12.8.1, făcută de R-GC, noi-2026.
 # Actualizare a traducerii pentru versiunea Y, făcută de X, Z(anul).
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.8.0\n"
+"Project-Id-Version: sysstat 12.8.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2026-06-07 09:07+0200\n"
-"PO-Revision-Date: 2026-06-07 20:03+0200\n"
+"POT-Creation-Date: 2026-11-12 11:45+0100\n"
+"PO-Revision-Date: 2026-11-13 16:38+0100\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -46,25 +47,26 @@ msgstr "Utilizare: %s [ opțiuni ] [ <interval> [ <repetiții> ] ]\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --debuginfo ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:86
+#: cifsiostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\\ [ -o JSON ]n\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 
-#: cifsiostat.c:584
+#: cifsiostat.c:612
 #, c-format
 msgid "No CIFS filesystems with statistics found\n"
 msgstr "Nu au fost găsite sisteme de fișiere CIFS cu statistici\n"
@@ -74,7 +76,7 @@ msgstr "Nu au fost găsite sisteme de fișiere CIFS cu statistici\n"
 msgid "sysstat version %s\n"
 msgstr "versiunea sysstat %s\n"
 
-#: count.c:111 ioconf.c:476 rd_stats.c:86 sa_common.c:2014 sadc.c:739
+#: count.c:111 ioconf.c:478 rd_stats.c:242 sa_common.c:2014 sadc.c:739
 #: sadc.c:802
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -89,16 +91,16 @@ msgstr "Nu se pot gestiona atât de multe procesoare!\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <director> ] [ -j { ID | ETICHETĂ | RUTĂ | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <nume_grup> ] [ -p [ <dispozitiv> [,...] | ALL ] ]\n"
 "[ <dispozitiv> [...] | ALL ] [ --debuginfo ]\n"
 
@@ -106,20 +108,20 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <director> ] [ -j { ID | ETICHETĂ | RUTĂ | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <nume_grup> ] [ -p [ <dispozitiv> [,...] | ALL ] ]\n"
 "[ <dispozitiv> [...] | ALL ]\n"
 
-#: iostat.c:2183 sa_common.c:2596
+#: iostat.c:2238 sa_common.c:2632
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Tip nevalid de nume de dispozitiv persistent\n"
@@ -130,14 +132,14 @@ msgid ""
 "Options are:\n"
 "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] [ -P { <cpu_list> | ALL } ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
 "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <listă_nod> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <listă_cpu> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ][ -P { <listă_cpu> | ALL } ]\n"
 
-#: mpstat.c:1735 pidstat.c:3530 sar.c:390
+#: mpstat.c:1766 pidstat.c:3564 sar.c:390
 msgid "Average:"
 msgstr "Media:"
 
@@ -153,29 +155,29 @@ msgid ""
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <nume_utilizator> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <comanda> ] [ -G <nume_proces> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 
 #: pidstat.c:230 sa_common.c:379
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Activitățile solicitate nu sunt disponibile\n"
 
-#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3938
-#: pr_stats.c:3952 sar.c:392
+#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3935
+#: pr_stats.c:3949 sar.c:392
 msgid "Summary:"
 msgstr "Rezumat:"
 
-#: pr_stats.c:3951
+#: pr_stats.c:3948
 msgid "Last:"
 msgstr "Ultimul:"
 
-#: rd_stats.c:436
+#: rd_stats.c:608
 #, c-format
 msgid "Cannot read %s\n"
 msgstr "Nu se poate citi %s\n"
@@ -249,16 +251,16 @@ msgstr "Date nevalide citite\n"
 msgid "Please check if data collecting is enabled\n"
 msgstr "Vă rugăm să verificați dacă colectarea datelor este activată\n"
 
-#: sa_common.c:2352
+#: sa_common.c:2355
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Activitățile solicitate nu sunt disponibile în fișierul %s\n"
 
-#: sa_common.c:3831
+#: sa_common.c:3867
 msgid "Maximum:"
 msgstr "Maxim:"
 
-#: sa_common.c:3832
+#: sa_common.c:3868
 msgid "Minimum:"
 msgstr "Minim:"
 
@@ -344,92 +346,92 @@ msgstr "Utilizare: %s [ opțiuni ] [ <interval> [ <repetiții> ] ] [ <fișier_da
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
 "[ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <opțiuni> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<listă_dispozitive> ] [ --fs=<listă_sisteme_fișiere> ] [ --iface=<listă_interfețe> ] [ --int=<listă_întreruperi> ]\n"
 "[ -s [ <ora_de_începere (format: hh:mm[:ss])> ] ] [ -e [ <ora_de_sfârșit (format: hh:mm[:ss])> ] ]\n"
 "[ -- <sar_opțiuni> ]\n"
 
-#: sadf.c:2039
+#: sadf.c:2047
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "Suportul PCP nu a fost compilat în\n"
 
-#: sadf_misc.c:1244
+#: sadf_misc.c:1275
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Fișier de date despre activitatea sistemului: %s (%#x)\n"
 
-#: sadf_misc.c:1253
+#: sadf_misc.c:1284
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Fișier de date «sa» autentic: %s (%x)\n"
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "no"
 msgstr "nu"
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "yes"
 msgstr "da"
 
-#: sadf_misc.c:1257
+#: sadf_misc.c:1288
 #, c-format
 msgid "Host: "
 msgstr "Gazda: "
 
-#: sadf_misc.c:1267
+#: sadf_misc.c:1298
 #, c-format
 msgid "File date: %s\n"
 msgstr "Data fișierului: %s\n"
 
-#: sadf_misc.c:1270
+#: sadf_misc.c:1301
 #, c-format
 msgid "File time: "
 msgstr "Ora fișierului: "
 
-#: sadf_misc.c:1275
+#: sadf_misc.c:1306
 #, c-format
 msgid "Timezone: %s\n"
 msgstr "Zona orară: %s\n"
 
-#: sadf_misc.c:1278
+#: sadf_misc.c:1309
 #, c-format
 msgid "File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 msgstr "Compoziția fișierului: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 
-#: sadf_misc.c:1283
+#: sadf_misc.c:1314
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Dimensiunea unui număr întreg lung: %d\n"
 
-#: sadf_misc.c:1285
+#: sadf_misc.c:1316
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "Numărul de activități din fișier: %u\n"
 
-#: sadf_misc.c:1287
+#: sadf_misc.c:1318
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr "Structuri suplimentare disponibile: %c\n"
 
-#: sadf_misc.c:1290
+#: sadf_misc.c:1321
 #, c-format
 msgid "List of activities:\n"
 msgstr "Lista activităților:\n"
 
-#: sadf_misc.c:1301
+#: sadf_misc.c:1332
 msgid "Unknown activity"
 msgstr "Activitate necunoscută"
 
-#: sadf_misc.c:1309
+#: sadf_misc.c:1340
 #, c-format
 msgid " \t[Unknown format]"
 msgstr " \t[Format necunoscut]"
@@ -689,12 +691,14 @@ msgstr "Nu se poate găsi colectorul de date (%s)\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
 
-#: tapestat.c:290
+#: tapestat.c:291
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Nu au fost găsite unități de bandă cu statistici\n"

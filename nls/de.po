@@ -2,14 +2,14 @@
 # Copyright (C) 1999 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
 # Sébastien GODARD <sysstat [at] orange.fr>, 1999.
-# Roland Illig <roland.illig@gmx.de>, 2009-2025.
+# Roland Illig <roland.illig@gmx.de>, 2009-2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.8.0\n"
+"Project-Id-Version: sysstat 12.8.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2026-06-07 09:07+0200\n"
-"PO-Revision-Date: 2026-06-07 20:54+0200\n"
+"POT-Creation-Date: 2026-11-12 11:45+0100\n"
+"PO-Revision-Date: 2026-11-14 01:28+0100\n"
 "Last-Translator: Roland Illig <roland.illig@gmx.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.10\n"
 
 #: cifsiostat.c:78 iostat.c:88 mpstat.c:138 sar.c:113 tapestat.c:105
 #, c-format
@@ -28,25 +28,26 @@ msgstr "Aufruf: %s [ Optionen … ] [ <Intervall> [ <Anzahl> ] ]\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --debuginfo ]\n"
 msgstr ""
 "Optionen sind:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 
-#: cifsiostat.c:86
+#: cifsiostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 msgstr ""
 "Optionen sind:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 
-#: cifsiostat.c:584
+#: cifsiostat.c:612
 #, c-format
 msgid "No CIFS filesystems with statistics found\n"
 msgstr "Keine CIFS-Dateisysteme mit Statistik gefunden.\n"
@@ -56,7 +57,7 @@ msgstr "Keine CIFS-Dateisysteme mit Statistik gefunden.\n"
 msgid "sysstat version %s\n"
 msgstr "sysstat Version %s\n"
 
-#: count.c:111 ioconf.c:476 rd_stats.c:86 sa_common.c:2014 sadc.c:739
+#: count.c:111 ioconf.c:478 rd_stats.c:242 sa_common.c:2014 sadc.c:739
 #: sadc.c:802
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -71,16 +72,16 @@ msgstr "Es sind zu viele Prozessoren vorhanden!\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Optionen sind:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <Verzeichnis> ] [ -j { ID | LABEL | PFAD | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
 "[ <Gerät> [...] | ALL ] [ --debuginfo ]\n"
 
@@ -88,20 +89,20 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "Optionen sind:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <Verzeichnis> ] [ -j { ID | LABEL | PFAD | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
 "[ <Gerät> [...] | ALL ]\n"
 
-#: iostat.c:2183 sa_common.c:2596
+#: iostat.c:2238 sa_common.c:2632
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Ungültige Art eines persistenten Gerätenamens\n"
@@ -112,15 +113,15 @@ msgid ""
 "Options are:\n"
 "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] [ -P { <cpu_list> | ALL } ]\n"
 msgstr ""
 "Optionen sind:\n"
 "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <Knoten-Liste> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <CPU-Liste> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] [ -P { <CPU-Liste> | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:1735 pidstat.c:3530 sar.c:390
+#: mpstat.c:1766 pidstat.c:3564 sar.c:390
 msgid "Average:"
 msgstr "Durchschn.:"
 
@@ -136,29 +137,29 @@ msgid ""
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 msgstr ""
 "Optionen sind:\n"
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <Benutzername> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <Befehl> ] [ -G <Prozessname> ]\n"
 "[ -p { <PID> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 
 #: pidstat.c:230 sa_common.c:379
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Die angeforderte Aktion ist nicht verfügbar.\n"
 
-#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3938
-#: pr_stats.c:3952 sar.c:392
+#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3935
+#: pr_stats.c:3949 sar.c:392
 msgid "Summary:"
 msgstr "Zusammenfassung:"
 
-#: pr_stats.c:3951
+#: pr_stats.c:3948
 msgid "Last:"
 msgstr "Zuletzt:"
 
-#: rd_stats.c:436
+#: rd_stats.c:608
 #, c-format
 msgid "Cannot read %s\n"
 msgstr "%s kann nicht gelesen werden\n"
@@ -212,16 +213,16 @@ msgstr "Ungültige Daten gelesen\n"
 msgid "Please check if data collecting is enabled\n"
 msgstr "Bitte prüfen Sie, ob die Datensammlung aktiviert ist\n"
 
-#: sa_common.c:2352
+#: sa_common.c:2355
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Angeforderte Aktivität ist nicht verfügbar in Datei %s\n"
 
-#: sa_common.c:3831
+#: sa_common.c:3867
 msgid "Maximum:"
 msgstr "Maximum:"
 
-#: sa_common.c:3832
+#: sa_common.c:3868
 msgid "Minimum:"
 msgstr "Minimum:"
 
@@ -307,94 +308,94 @@ msgstr "Aufruf: %s [ Optionen ] [ <Intervall> [ <Anzahl> ] ] [ <Datendatei> | -[
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
 "[ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Optionen sind:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <Optionen> [,...] ] [ -P { <CPU> [,...] | ALL } ]\n"
 "[ --dev=<Geräteliste> ] [ --fs=<Dateisystemliste> ] [ --iface=<Schnittstellenliste> ]\n"
 "[ --int=<Unterbrechungsliste> ]\n"
 "[ -s [ <Startzeitpunkt> ] ] [ -e [ <Endzeitpunkt> ] ]\n"
 "[ -- <SAR-Optionen> ]\n"
 
-#: sadf.c:2039
+#: sadf.c:2047
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "PCP-Unterstützung ist nicht eincompiliert\n"
 
-#: sadf_misc.c:1244
+#: sadf_misc.c:1275
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Systemaktivitäts-Datendatei: %s (%#x)\n"
 
 # "sa" means "system activity". This should be mentioned in the source code.
-#: sadf_misc.c:1253
+#: sadf_misc.c:1284
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Systemaktivitäts-Datendatei: %s (%x)\n"
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "no"
 msgstr "nein"
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "yes"
 msgstr "ja"
 
-#: sadf_misc.c:1257
+#: sadf_misc.c:1288
 #, c-format
 msgid "Host: "
 msgstr "Rechner: "
 
-#: sadf_misc.c:1267
+#: sadf_misc.c:1298
 #, c-format
 msgid "File date: %s\n"
 msgstr "Dateizeit: %s\n"
 
-#: sadf_misc.c:1270
+#: sadf_misc.c:1301
 #, c-format
 msgid "File time: "
 msgstr "Dateizeit: "
 
-#: sadf_misc.c:1275
+#: sadf_misc.c:1306
 #, c-format
 msgid "Timezone: %s\n"
 msgstr "Zeitzone: %s\n"
 
-#: sadf_misc.c:1278
+#: sadf_misc.c:1309
 #, c-format
 msgid "File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 msgstr "Dateizusammensetzung: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 
-#: sadf_misc.c:1283
+#: sadf_misc.c:1314
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Größe eines Longint: %d\n"
 
-#: sadf_misc.c:1285
+#: sadf_misc.c:1316
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "Anzahl der Aktivitäten in Datei: %u\n"
 
-#: sadf_misc.c:1287
+#: sadf_misc.c:1318
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr "Verfügbare Extrastrukturen: %c\n"
 
-#: sadf_misc.c:1290
+#: sadf_misc.c:1321
 #, c-format
 msgid "List of activities:\n"
 msgstr "Liste der Aktivitäten:\n"
 
-#: sadf_misc.c:1301
+#: sadf_misc.c:1332
 msgid "Unknown activity"
 msgstr "Unbekannte Aktivität"
 
-#: sadf_misc.c:1309
+#: sadf_misc.c:1340
 #, c-format
 msgid " \t[Unknown format]"
 msgstr "\t[Unbekanntes Format]"
@@ -656,12 +657,14 @@ msgstr "Datensammler »%s« kann nicht gefunden werden\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
 msgstr ""
 "Optionen sind:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
 
-#: tapestat.c:290
+#: tapestat.c:291
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Keine Bandlaufwerke mit Statistik gefunden.\n"

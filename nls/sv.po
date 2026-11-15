@@ -10,10 +10,10 @@
 # $Revision: 1.34 $
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.8.0\n"
+"Project-Id-Version: sysstat 12.8.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2026-06-07 09:07+0200\n"
-"PO-Revision-Date: 2026-06-09 05:18+0200\n"
+"POT-Creation-Date: 2026-11-12 11:45+0100\n"
+"PO-Revision-Date: 2026-11-13 09:31+0100\n"
 "Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.10\n"
 
 #: cifsiostat.c:78 iostat.c:88 mpstat.c:138 sar.c:113 tapestat.c:105
 #, c-format
@@ -32,27 +32,29 @@ msgstr "Användning: %s [ flaggor ] [ <intervall> [ <antal> ] ]\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --debuginfo ]\n"
 msgstr ""
 "Flaggor är:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --debuginfo ]\n"
 "\n"
 
-#: cifsiostat.c:86
+#: cifsiostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 msgstr ""
 "Flaggor är:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 "\n"
 
-#: cifsiostat.c:584
+#: cifsiostat.c:612
 #, c-format
 msgid "No CIFS filesystems with statistics found\n"
 msgstr "Inga CIFS-filsystem med statistik hittades\n"
@@ -62,7 +64,7 @@ msgstr "Inga CIFS-filsystem med statistik hittades\n"
 msgid "sysstat version %s\n"
 msgstr "sysstat version %s\n"
 
-#: count.c:111 ioconf.c:476 rd_stats.c:86 sa_common.c:2014 sadc.c:739
+#: count.c:111 ioconf.c:478 rd_stats.c:242 sa_common.c:2014 sadc.c:739
 #: sadc.c:802
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -77,16 +79,16 @@ msgstr "Kan inte hantera så många processorer!\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Flaggor är:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <katalog> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\r\n"
 "[ [ -H ] -g <gruppnamn> ] [ -p [ <enhet> [,...] | ALL ] ]\n"
 "[ <enhet> [...] | ALL ] [ --debuginfo ]\n"
 
@@ -94,21 +96,21 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "Flaggor är:\n"
 " -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <katalog> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <gruppnamn> ] [ -p [ <enhet> [,...] | ALL ] ]\n"
 "[ <enhet> [...] | ALL ]\n"
 "\n"
 
-#: iostat.c:2183 sa_common.c:2596
+#: iostat.c:2238 sa_common.c:2632
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Ogiltig typ av persistent enhetsnamn\n"
@@ -119,16 +121,16 @@ msgid ""
 "Options are:\n"
 "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] [ -P { <cpu_list> | ALL } ]\n"
 msgstr ""
 "Flaggor är:\n"
 "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <nodlista> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpulista> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] -P { <cpulista> | ALL } ]\n"
 "\n"
 
 # sar.c:
-#: mpstat.c:1735 pidstat.c:3530 sar.c:390
+#: mpstat.c:1766 pidstat.c:3564 sar.c:390
 msgid "Average:"
 msgstr "Genomsnitt:"
 
@@ -144,29 +146,30 @@ msgid ""
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 msgstr ""
 "Flaggor är:\n"
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <användarnamn> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <kommando> ] [ -G <process_namn> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
+"\n"
 
 #: pidstat.c:230 sa_common.c:379
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Begärda aktiviteter är inte tillgängliga\n"
 
-#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3938
-#: pr_stats.c:3952 sar.c:392
+#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3935
+#: pr_stats.c:3949 sar.c:392
 msgid "Summary:"
 msgstr "Sammanfattning:"
 
-#: pr_stats.c:3951
+#: pr_stats.c:3948
 msgid "Last:"
 msgstr "Senaste:"
 
-#: rd_stats.c:436
+#: rd_stats.c:608
 #, c-format
 msgid "Cannot read %s\n"
 msgstr "Kan inte läsa %s\n"
@@ -220,16 +223,16 @@ msgstr "Ogiltig data läst\n"
 msgid "Please check if data collecting is enabled\n"
 msgstr "Kontrollera om datainsamling är aktiverad\n"
 
-#: sa_common.c:2352
+#: sa_common.c:2355
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Begärda aktiviteter inte tillgängliga i filen %s\n"
 
-#: sa_common.c:3831
+#: sa_common.c:3867
 msgid "Maximum:"
 msgstr "Maximalt:"
 
-#: sa_common.c:3832
+#: sa_common.c:3868
 msgid "Minimum:"
 msgstr "Minimalt:"
 
@@ -315,93 +318,91 @@ msgstr "Användning: %s [ flaggor ] [ <intervall> [ <antal> ] ] [ <datafil> | -[
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
 "[ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
-"Flaggor är:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -O <flaggor> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
-"\n"
-"[ -s [ <tid-start> ] ] [ -e [ <slut-tid> ] ]\n"
-"[ -- <sar-flaggor> ]\n"
+"[ -s [ <start_tid> ] ] [ -e [ <slut_tid> ] ]\n"
+"[ -- <sar_options> ]\n"
 
-#: sadf.c:2039
+#: sadf.c:2047
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "PCP-stöd är inte inkompilerat\n"
 
-#: sadf_misc.c:1244
+#: sadf_misc.c:1275
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Systemaktivitetsfil: %s (%#x)\n"
 
-#: sadf_misc.c:1253
+#: sadf_misc.c:1284
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Genuin sa-datafil: %s (%x)\n"
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "no"
 msgstr "nej"
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "yes"
 msgstr "ja"
 
-#: sadf_misc.c:1257
+#: sadf_misc.c:1288
 #, c-format
 msgid "Host: "
 msgstr "Värd: "
 
-#: sadf_misc.c:1267
+#: sadf_misc.c:1298
 #, c-format
 msgid "File date: %s\n"
 msgstr "Fildatum: %s\n"
 
-#: sadf_misc.c:1270
+#: sadf_misc.c:1301
 #, c-format
 msgid "File time: "
 msgstr "Filtid: "
 
-#: sadf_misc.c:1275
+#: sadf_misc.c:1306
 #, c-format
 msgid "Timezone: %s\n"
 msgstr "Tidszon: %s\n"
 
-#: sadf_misc.c:1278
+#: sadf_misc.c:1309
 #, c-format
 msgid "File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 msgstr "Filsammansättning:(%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 
-#: sadf_misc.c:1283
+#: sadf_misc.c:1314
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Storlek på en lång int: %d\n"
 
-#: sadf_misc.c:1285
+#: sadf_misc.c:1316
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "Antal aktiviteter i filen: %u\n"
 
-#: sadf_misc.c:1287
+#: sadf_misc.c:1318
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr "Extra strukturer tillgängliga: %c\n"
 
-#: sadf_misc.c:1290
+#: sadf_misc.c:1321
 #, c-format
 msgid "List of activities:\n"
 msgstr "Lista över aktiviteter:\n"
 
-#: sadf_misc.c:1301
+#: sadf_misc.c:1332
 msgid "Unknown activity"
 msgstr "Okänd aktivitet"
 
-#: sadf_misc.c:1309
+#: sadf_misc.c:1340
 #, c-format
 msgid " \t[Unknown format]"
 msgstr "\t[Okänt format]"
@@ -661,13 +662,14 @@ msgstr "Kan inte hitta datainsamlaren (%s)\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
 msgstr ""
 "Flaggor är:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"
-"\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
 
-#: tapestat.c:290
+#: tapestat.c:291
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Inga bandenheter med statistik hittades\n"

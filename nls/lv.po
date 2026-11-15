@@ -3,107 +3,111 @@
 # This file is distributed under the same license as the sysstat package.
 #
 #
-# Rihards Prieditis <rprieditis@gmail.com>, 2009, 2010,2011, 2023, 2025.
+# Rihards Priedītis <rprieditis@gmail.com>, 2009, 2010,2011, 2023, 2025.
 # Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2012, 2014.
+# Rihards Priedītis <rprieditis@gmail.com>, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-12.7.7\n"
+"Project-Id-Version: sysstat-12.8.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2025-02-02 09:04+0100\n"
-"PO-Revision-Date: 2025-03-09 11:52+0000\n"
+"POT-Creation-Date: 2026-11-12 11:45+0100\n"
+"PO-Revision-Date: 2026-11-13 10:36+0200\n"
 "Last-Translator: Rihards Priedītis <rprieditis@gmail.com>\n"
-"Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
+"Language-Team: Latvian <translation-team-lv@googlegroups.com>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==0 || (n%100>=11 && n%100<=19) ? 0 : n%10==1 && n%100!=11 ? 1 : 2);\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.10\n"
 
 #: cifsiostat.c:78 iostat.c:88 mpstat.c:138 sar.c:113 tapestat.c:105
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Lietošana: %s [ opcijas ] [ <intervāls> [ <skaits> ] ] ]\n"
+msgstr "Lietošana: %s [ opcijas ] [ <intervāls> [ <skaits> ] ]\n"
 
 #: cifsiostat.c:82
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --debuginfo ]\n"
 msgstr ""
 "Opcijas:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --debuginfo ]\n"
 
-#: cifsiostat.c:86
+#: cifsiostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 msgstr ""
 "Opcijas:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"\n"
 
-#: cifsiostat.c:586
+#: cifsiostat.c:612
 #, c-format
 msgid "No CIFS filesystems with statistics found\n"
-msgstr "Nav atrasta CIFS failusistēma ar statistiku\n"
+msgstr "Nav atrastas CIFS failu sistēmas ar statistiku\n"
 
-#: common.c:100
+#: common.c:103
 #, c-format
 msgid "sysstat version %s\n"
 msgstr "sysstat versija %s\n"
 
-#: count.c:118 ioconf.c:480 rd_stats.c:86 sa_common.c:2011 sadc.c:741
-#: sadc.c:804
+#: count.c:111 ioconf.c:478 rd_stats.c:242 sa_common.c:2014 sadc.c:739
+#: sadc.c:802
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Nevar atvērt %s: %s\n"
 
-#: count.c:172
+#: count.c:165
 #, c-format
 msgid "Cannot handle so many processors!\n"
-msgstr "Nevar vadīt tik daudz procesoru!\n"
+msgstr "Nevar apstrādāt tik daudz procesoru!\n"
 
 #: iostat.c:91
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Opcijas:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ { { -f | +f } <direktorija> ] [ -j { ID | LABEL | PATH | UUID | ... } ] ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -H ] -g <grupas_vārds> ] [ -p [ <ierīce> [,...] | ALL ] ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <direktorija> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ [ -H ] -g <grupas_nosaukums> ] [ -p [ <ierīce> [,...] | ALL ] ]\n"
 "[ <ierīce> [...] | ALL ] [ --debuginfo ]\n"
 
 #: iostat.c:98
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "Opcijas:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ { { -f | +f } <direktorija> ] [ -j { ID | LABEL | PATH | UUID | ... } ] ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -H ] -g <grupas_vārds> ] [ -p [ <ierīce> [,...] | ALL ] ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <direktorija> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ [ -H ] -g <grupas_nosaukums> ] [ -p [ <ierīce> [,...] | ALL ] ]\n"
 "[ <ierīce> [...] | ALL ]\n"
 
-#: iostat.c:2192 sa_common.c:2593
+#: iostat.c:2238 sa_common.c:2632
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Nederīgs pastāvīgās ierīces nosaukuma tips\n"
@@ -112,23 +116,23 @@ msgstr "Nederīgs pastāvīgās ierīces nosaukuma tips\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -H ] [ -n ] [ -T ] [ -u ] [ -V ]\n"
+"[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] [ -P { <cpu_list> | ALL } ]\n"
 msgstr ""
 "Opcijas:\n"
-"[ -A ] [ -H ] [ -n ] [ -T ] [ -u ] [ -V ]\n"
-"[ -I { SUM | CPU | SCPU | SCPU | ALL } ] [ -N { <mezglu_saraksts> | ALL } ] ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_saraksts> | ALL } ]\n"
+"[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <mezglu_saraksts> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] [ -P { <cpu_saraksts> | ALL } ]\n"
 
-#: mpstat.c:1738 pidstat.c:3530 sar.c:390
+#: mpstat.c:1766 pidstat.c:3564 sar.c:390
 msgid "Average:"
 msgstr "Vidēji:"
 
 #: pidstat.c:96
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
-msgstr "Lietošana: %s [ opcijas ] [ <intervāls> [ <skaits> ] ] ] [ -e <programma> <argumenti> ]\n"
+msgstr "Lietošana: %s [ opcijas ] [ <intervāls> [ <skaits> ] ] [ -e <programma> <argumenti> ]\n"
 
 #: pidstat.c:99
 #, c-format
@@ -137,49 +141,49 @@ msgid ""
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 msgstr ""
 "Opcijas:\n"
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <lietotāja_vārds> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <kommanda> ] [ -G <procesa_vārds> ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <komanda> ] [ -G <procesa_nosaukums> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 
-#: pidstat.c:230 sa_common.c:376
+#: pidstat.c:230 sa_common.c:379
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Pieprasītās darbības nav pieejamas\n"
 
-#: pr_stats.c:3734 pr_stats.c:3741 pr_stats.c:3859 pr_stats.c:3945
-#: pr_stats.c:3959 sar.c:393
+#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3935
+#: pr_stats.c:3949 sar.c:392
 msgid "Summary:"
 msgstr "Kopsavilkums:"
 
-#: pr_stats.c:3958
+#: pr_stats.c:3948
 msgid "Last:"
 msgstr "Pēdējais:"
 
-#: rd_stats.c:427
+#: rd_stats.c:608
 #, c-format
 msgid "Cannot read %s\n"
 msgstr "Nevar nolasīt %s\n"
 
-#: sa_common.c:309
+#: sa_common.c:312
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "Fails izveidots as sar/sadc no sysstat versijas %d.%d.%d"
+msgstr "Fails izveidots ar sar/sadc no sysstat versijas %d.%d.%d"
 
-#: sa_common.c:340
+#: sa_common.c:343
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Nederīgs sistēmas darbības fails: %s\n"
 
-#: sa_common.c:352
+#: sa_common.c:355
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Pašreizējā sysstat versija nevar nolasīt šī faila formātu (%#x)\n"
 
-#: sa_common.c:356
+#: sa_common.c:359
 #, c-format
 msgid ""
 "Try to convert it to current format. Enter:\n"
@@ -188,41 +192,41 @@ msgstr ""
 "Mēģiniet to konvertēt uz pašreizējo formātu. Ievadiet:\n"
 "\n"
 
-#: sa_common.c:359
+#: sa_common.c:362
 #, c-format
 msgid "You should then be able to read the new file created (%s.new)\n"
 msgstr "Pēc tam jums vajadzētu būt iespējai nolasīt izveidoto jauno failu (%s.new)\n"
 
-#: sa_common.c:1585
+#: sa_common.c:1588
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Kļūda, lasot sistēmas darbības failu: %s\n"
 
-#: sa_common.c:1595
+#: sa_common.c:1598
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Sistēmas darbības faila beigas negaidītas\n"
 
-#: sa_common.c:1751
+#: sa_common.c:1754
 #, c-format
 msgid "Invalid data read\n"
 msgstr "Nederīgs datu lasījums\n"
 
-#: sa_common.c:2014
+#: sa_common.c:2017
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Lūdzu, pārbaudiet, vai ir iespējota datu vākšana\n"
 
-#: sa_common.c:2349
+#: sa_common.c:2355
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Pieprasītās darbības nav pieejamas failā %s\n"
 
-#: sa_common.c:3830
+#: sa_common.c:3867
 msgid "Maximum:"
 msgstr "Maksimums:"
 
-#: sa_common.c:3831
+#: sa_common.c:3868
 msgid "Minimum:"
 msgstr "Minimums:"
 
@@ -240,35 +244,35 @@ msgstr ""
 "\n"
 "Procesora darbība nav atrodama failā. Pārtrauc...\n"
 
-#: sa_conv.c:408 sa_conv.c:1628
+#: sa_conv.c:408 sa_conv.c:1636
 #, c-format
 msgid ""
 "\n"
 "%s: Invalid data found. Aborting...\n"
 msgstr ""
 "\n"
-"%s: Atrasti nederīgi dati. Pārtraucam...\n"
+"%s: Atrasti nederīgi dati. Pārtrauc...\n"
 
-#: sa_conv.c:1941
+#: sa_conv.c:1949
 #, c-format
 msgid "Statistics:\n"
 msgstr "Statistika:\n"
 
-#: sa_conv.c:2042
+#: sa_conv.c:2050
 #, c-format
 msgid ""
 "\n"
 "File format already up-to-date\n"
 msgstr ""
 "\n"
-"Failu formāts jau ir atjaunināts\n"
+"Faila formāts jau ir aktuāls\n"
 
-#: sa_conv.c:2054
+#: sa_conv.c:2062
 #, c-format
 msgid "HZ: Using current value: %lu\n"
 msgstr "HZ: Izmanto pašreizējo vērtību: %lu\n"
 
-#: sa_conv.c:2085
+#: sa_conv.c:2093
 #, c-format
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr "Fails veiksmīgi konvertēts uz sysstat formāta versiju %s\n"
@@ -276,7 +280,7 @@ msgstr "Fails veiksmīgi konvertēts uz sysstat formāta versiju %s\n"
 #: sadc.c:97
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
-msgstr "Lietošana: %s [ opcijas ] [ <intervāls> [ <skaits> ] ] ] [ <izvada_fails> ]\n"
+msgstr "Lietošana: %s [ opcijas ] [ <intervāls> [ <skaits> ] ] [ <izvada_fails> ]\n"
 
 #: sadc.c:100
 #, c-format
@@ -287,14 +291,14 @@ msgid ""
 msgstr ""
 "Opcijas:\n"
 "[ -C <komentārs> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
-"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ] ]\n"
+"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
-#: sadc.c:271
+#: sadc.c:272
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
-msgstr "Nav iespējams ierakstīt datus sistēmas darbības failā: %s\n"
+msgstr "Neizdevās ierakstīt datus sistēmas darbības failā: %s\n"
 
-#: sadc.c:1029
+#: sadc.c:1027
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Failam nevar pievienot datus (%s)\n"
@@ -302,98 +306,98 @@ msgstr "Failam nevar pievienot datus (%s)\n"
 #: sadf.c:118
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
-msgstr "Lietošana: %s [ opcijas ] [ <intervāls> [ <skaits> ] ] ] [ <datu_fails> | -[0-9]+ ]\n"
+msgstr "Lietošana: %s [ opcijas ] [ <intervāls> [ <skaits> ] ] [ <datu_fails> | -[0-9]+ ]\n"
 
 #: sadf.c:121
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
 "[ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Opcijas:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <opcijas> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<ierīču_saraksts> ] [ --fs=<fs_saraksts> ] [ --iface=<iface_saraksts> ] [ --int=<int_saraksts> ]\n"
 "[ -s [ <laika_sākums> ] ] [ -e [ <laika_beigas> ] ]\n"
 "[ -- <sar_opcijas> ]\n"
 
-#: sadf.c:2042
+#: sadf.c:2047
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "PCP atbalsts nav kompilēts\n"
 
-#: sadf_misc.c:1249
+#: sadf_misc.c:1275
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Sistēmas darbības datu fails: %s (%#x)\n"
 
-#: sadf_misc.c:1258
+#: sadf_misc.c:1284
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Īsts sa datu fails: %s (%x)\n"
 
-#: sadf_misc.c:1259
+#: sadf_misc.c:1285
 msgid "no"
 msgstr "nē"
 
-#: sadf_misc.c:1259
+#: sadf_misc.c:1285
 msgid "yes"
 msgstr "jā"
 
-#: sadf_misc.c:1262
+#: sadf_misc.c:1288
 #, c-format
 msgid "Host: "
 msgstr "Resursdators: "
 
-#: sadf_misc.c:1272
+#: sadf_misc.c:1298
 #, c-format
 msgid "File date: %s\n"
 msgstr "Faila datums: %s\n"
 
-#: sadf_misc.c:1275
+#: sadf_misc.c:1301
 #, c-format
 msgid "File time: "
 msgstr "Faila laiks: "
 
-#: sadf_misc.c:1280
+#: sadf_misc.c:1306
 #, c-format
 msgid "Timezone: %s\n"
 msgstr "Laika josla: %s\n"
 
-#: sadf_misc.c:1283
+#: sadf_misc.c:1309
 #, c-format
 msgid "File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 msgstr "Failu sastāvs: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 
-#: sadf_misc.c:1288
+#: sadf_misc.c:1314
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Garā int izmērs: %d\n"
 
-#: sadf_misc.c:1290
+#: sadf_misc.c:1316
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "Darbību skaits failā: %u\n"
 
-#: sadf_misc.c:1292
+#: sadf_misc.c:1318
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr "Pieejamās papildu struktūras: %c\n"
 
-#: sadf_misc.c:1295
+#: sadf_misc.c:1321
 #, c-format
 msgid "List of activities:\n"
 msgstr "Darbību saraksts:\n"
 
-#: sadf_misc.c:1306
+#: sadf_misc.c:1332
 msgid "Unknown activity"
-msgstr "Nezināma aktivitāte"
+msgstr "Nezināma darbība"
 
-#: sadf_misc.c:1314
+#: sadf_misc.c:1340
 #, c-format
 msgid " \t[Unknown format]"
 msgstr " \t[Nezināms formāts]"
@@ -425,7 +429,7 @@ msgstr ""
 "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
 "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <faila_nosaukums> ] | -o [ <faila_nosaukums> ] | -[0-9]+ ]\n"
-"[ -i <intervāls> ] [ -s [ <sākuma_laiks> ] ] ] [ -e [ <beigu_laiks> ] ]\n"
+"[ -i <intervāls> ] [ -s [ <sākuma_laiks> ] ] [ -e [ <beigu_laiks> ] ]\n"
 
 #: sar.c:155
 #, c-format
@@ -455,7 +459,7 @@ msgstr "\t-F [ MOUNT ]\n"
 #: sar.c:160
 #, c-format
 msgid "\t\tFilesystems statistics [A_FS]\n"
-msgstr "\t\tFaila sistēmu statistika [A_FS]\n"
+msgstr "\t\tFailu sistēmu statistika [A_FS]\n"
 
 #: sar.c:161
 #, c-format
@@ -468,7 +472,7 @@ msgid ""
 "\t-I [ SUM | ALL ]\n"
 "\t\tInterrupts statistics [A_IRQ]\n"
 msgstr ""
-"\t-I [ SUMMA | ALL ]\n"
+"\t-I [ SUM | ALL ]\n"
 "\t\tPārtraukumu statistika [A_IRQ]\n"
 
 #: sar.c:164
@@ -487,12 +491,12 @@ msgid ""
 msgstr ""
 "\t-m { <atslēgvārds> [,...] | ALL }\n"
 "\t\tEnerģijas pārvaldības statistika [A_PWR_...]\n"
-"\t\tAtslēgas vārdi:\n"
+"\t\tAtslēgvārdi:\n"
 "\t\tBAT\tBateriju ietilpība\n"
 "\t\tCPU\tCPU momentānā takts frekvence\n"
 "\t\tFAN\tVentilatoru ātrums\n"
 "\t\tFREQ\tCPU vidējā takts frekvence\n"
-"\t\tIN\tSprieguma ievads\n"
+"\t\tIN\tSprieguma ievadi\n"
 "\t\tTEMP\tIerīču temperatūra\n"
 "\t\tUSB\tSistēmai pievienotās USB ierīces\n"
 
@@ -523,27 +527,27 @@ msgid ""
 "\t\tFC\tFibre channel HBAs\n"
 "\t\tSOFT\tSoftware-based network processing\n"
 msgstr ""
-"\t-n { <atslēgasvārds> [,...] | ALL }\n"
+"\t-n { <atslēgvārds> [,...] | ALL }\n"
 "\t\tTīkla statistika [A_NET_...]\n"
-"\t\tAtslēgas vārdi:\n"
+"\t\tAtslēgvārdi:\n"
 "\t\tDEV\tTīkla saskarnes\n"
 "\t\tEDEV\tTīkla saskarnes (kļūdas)\n"
 "\t\tNFS\tNFS klients\n"
 "\t\tNFSD\tNFS serveris\n"
-"\t\tSOCK\tLigzdas (v4)\n"
-"\t\tIP\tIP datplūsma (v4)\n"
-"\t\tEIP\tIP datu plūsma (v4) (kļūdas)\n"
-"\t\tICMP\tICMP datplūsma (v4)\n"
-"\t\tEICMP\tICMP datplūsma (v4) (kļūdas)\n"
-"\t\tTCP\tTCP datplūsma (v4)\n"
-"\t\tETCP\tTCP datplūsma (v4) (kļūdas)\n"
-"\t\tUDP\tUDP datplūsma (v4)\n"
-"\t\tSOCK6\tLigzdas (v6)\n"
-"\t\tIP6\tIP datplūsma (v6)\n"
-"\t\tEIP6\tIP datplūsma (v6) (kļūdas)\n"
-"\t\tICMP6\tICMP datplūsma (v6)\n"
-"\t\tEICMP6\tICMP datplūsma (v6) (kļūdas)\n"
-"\t\tUDP6\tUDP datplūsma (v6)\n"
+"\t\tSOCK\tLigzdas\t(v4)\n"
+"\t\tIP\tIP datplūsma\t(v4)\n"
+"\t\tEIP\tIP datplūsma\t(v4) (kļūdas)\n"
+"\t\tICMP\tICMP datplūsma\t(v4)\n"
+"\t\tEICMP\tICMP datplūsma\t(v4) (kļūdas)\n"
+"\t\tTCP\tTCP datplūsma\t(v4)\n"
+"\t\tETCP\tTCP datplūsma\t(v4) (kļūdas)\n"
+"\t\tUDP\tUDP datplūsma\t(v4)\n"
+"\t\tSOCK6\tLigzdas\t(v6)\n"
+"\t\tIP6\tIP datplūsma\t(v6)\n"
+"\t\tEIP6\tIP datplūsma\t(v6) (kļūdas)\n"
+"\t\tICMP6\tICMP datplūsma\t(v6)\n"
+"\t\tEICMP6\tICMP datplūsma\t(v6) (kļūdas)\n"
+"\t\tUDP6\tUDP datplūsma\t(v6)\n"
 "\t\tFC\tŠķiedru kanālu HBA\n"
 "\t\tSOFT\tUz programmatūru balstīta tīkla apstrāde\n"
 
@@ -558,13 +562,13 @@ msgid ""
 "\t\tIO\tPressure-stall I/O statistics [A_PSI_IO]\n"
 "\t\tMEM\tPressure-stall memory statistics [A_PSI_MEM]\n"
 msgstr ""
-"\t-q [ <atslēgasvārds> [,...] | PSI | ALL ]\n"
-"\t\tSistēmas slodzes un spiediena krituma statistika\n"
-"\t\tAtslēgas vārdi:\n"
+"\t-q [ <atslēgvārds> [,...] | PSI | ALL ]\n"
+"\t\tSistēmas slodzes un spiediena aiztures statistika\n"
+"\t\tAtslēgvārdi:\n"
 "\t\tLOAD\tRindas garuma un vidējās slodzes statistika [A_QUEUE]\n"
-"\t\tCPU\tSpiediena krituma procesora statistika [A_PSI_CPU]\n"
-"\t\tIO\tSpiediena krituma I/O statistika [A_PSI_IO]\n"
-"\t\tMEM\tSpiediena krituma atmiņas statistika [A_PSI_MEM]\n"
+"\t\tCPU\tSpiediena aiztures procesora statistika [A_PSI_CPU]\n"
+"\t\tIO\tSpiediena aiztures I/O statistika [A_PSI_IO]\n"
+"\t\tMEM\tSpiediena aiztures atmiņas statistika [A_PSI_MEM]\n"
 
 #: sar.c:204
 #, c-format
@@ -578,7 +582,7 @@ msgstr ""
 #: sar.c:206
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
-msgstr "\t-S\tApmaiņas vietas izmantošanas statistika [A_MEMORY]\n"
+msgstr "\t-S\tMaiņatmiņas izmantošanas statistika [A_MEMORY]\n"
 
 #: sar.c:207
 #, c-format
@@ -597,7 +601,7 @@ msgstr "\t-v\tKodola tabulu statistika [A_KTABLES]\n"
 #: sar.c:210
 #, c-format
 msgid "\t-W\tSwapping statistics [A_SWAP]\n"
-msgstr "\t-W\tApmaiņas statistika [A_SWAP]\n"
+msgstr "\t-W\tMaiņatmiņas statistika [A_SWAP]\n"
 
 #: sar.c:211
 #, c-format
@@ -612,7 +616,7 @@ msgstr "\t-y\tTTY ierīču statistika [A_SERIAL]\n"
 #: sar.c:226
 #, c-format
 msgid "Data collector will be sought in PATH\n"
-msgstr "Iekš PATH tiks meklēts datu vācējs\n"
+msgstr "Datu vācējs tiks meklēts PATH\n"
 
 #: sar.c:229
 #, c-format
@@ -627,12 +631,12 @@ msgstr "Negaidītas datu vākšanas beigas\n"
 #: sar.c:299
 #, c-format
 msgid "Inconsistent input data\n"
-msgstr "Nesakritīga datu ievade\n"
+msgstr "Nekonsekventi ievades dati\n"
 
 #: sar.c:914
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
-msgstr "Nepareiza datu savācēja izmantošana no citas sysstat versijas\n"
+msgstr "Tiek izmantots nepareizs datu vācējs no citas sysstat versijas\n"
 
 #: sar.c:1603
 #, c-format
@@ -642,23 +646,26 @@ msgstr "-f un -o opcijas ir savstarpēji izslēdzošas\n"
 #: sar.c:1613
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
-msgstr "Nav nolasīts no sistēmas darbības faila (izmantojiet opciju -f)\n"
+msgstr "Netiek lasīts no sistēmas darbības faila (izmantojiet opciju -f)\n"
 
-#: sar.c:1762
+#: sar.c:1763
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
-msgstr "Nevar atrast datu savācēju (%s)\n"
+msgstr "Nevar atrast datu vācēju (%s)\n"
 
 #: tapestat.c:107
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
 msgstr ""
 "Opcijas:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
+"\n"
 
-#: tapestat.c:290
+#: tapestat.c:291
 #, c-format
 msgid "No tape drives with statistics found\n"
-msgstr "Nav atrasti lentes diski ar statistiku\n"
+msgstr "Nav atrasti lentu diskdziņi ar statistiku\n"

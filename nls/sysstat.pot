@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2026-08-28 17:27+0200\n"
+"POT-Creation-Date: 2026-11-14 05:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 "[ --debuginfo ]\n"
 msgstr ""
@@ -35,11 +35,11 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 msgstr ""
 
-#: cifsiostat.c:593
+#: cifsiostat.c:612
 #, c-format
 msgid "No CIFS filesystems with statistics found\n"
 msgstr ""
@@ -49,7 +49,7 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr ""
 
-#: count.c:111 ioconf.c:476 rd_stats.c:242 sa_common.c:2014 sadc.c:739
+#: count.c:111 ioconf.c:478 rd_stats.c:242 sa_common.c:2014 sadc.c:739
 #: sadc.c:802
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -67,7 +67,8 @@ msgid ""
 "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] "
 "[ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | "
+"NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
@@ -79,12 +80,13 @@ msgid ""
 "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] "
 "[ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | "
+"NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 
-#: iostat.c:2198 sa_common.c:2629
+#: iostat.c:2238 sa_common.c:2632
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -95,10 +97,11 @@ msgid ""
 "Options are:\n"
 "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] [ -P { <cpu_list> | "
+"ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:1735 pidstat.c:3530 sar.c:390
+#: mpstat.c:1766 pidstat.c:3564 sar.c:390
 msgid "Average:"
 msgstr ""
 
@@ -116,7 +119,7 @@ msgid ""
 "[ <username> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 msgstr ""
 
 #: pidstat.c:230 sa_common.c:379
@@ -133,7 +136,7 @@ msgstr ""
 msgid "Last:"
 msgstr ""
 
-#: rd_stats.c:598
+#: rd_stats.c:608
 #, c-format
 msgid "Cannot read %s\n"
 msgstr ""
@@ -185,16 +188,16 @@ msgstr ""
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:2352
+#: sa_common.c:2355
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
 
-#: sa_common.c:3864
+#: sa_common.c:3867
 msgid "Maximum:"
 msgstr ""
 
-#: sa_common.c:3865
+#: sa_common.c:3868
 msgid "Minimum:"
 msgstr ""
 
@@ -272,8 +275,8 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | "
-"-U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | "
+"-t | -U ] [ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --"
 "int=<int_list> ]\n"
@@ -281,79 +284,79 @@ msgid ""
 "[ -- <sar_options> ]\n"
 msgstr ""
 
-#: sadf.c:2039
+#: sadf.c:2047
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr ""
 
-#: sadf_misc.c:1244
+#: sadf_misc.c:1275
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr ""
 
-#: sadf_misc.c:1253
+#: sadf_misc.c:1284
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr ""
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "no"
 msgstr ""
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "yes"
 msgstr ""
 
-#: sadf_misc.c:1257
+#: sadf_misc.c:1288
 #, c-format
 msgid "Host: "
 msgstr ""
 
-#: sadf_misc.c:1267
+#: sadf_misc.c:1298
 #, c-format
 msgid "File date: %s\n"
 msgstr ""
 
-#: sadf_misc.c:1270
+#: sadf_misc.c:1301
 #, c-format
 msgid "File time: "
 msgstr ""
 
-#: sadf_misc.c:1275
+#: sadf_misc.c:1306
 #, c-format
 msgid "Timezone: %s\n"
 msgstr ""
 
-#: sadf_misc.c:1278
+#: sadf_misc.c:1309
 #, c-format
 msgid "File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 msgstr ""
 
-#: sadf_misc.c:1283
+#: sadf_misc.c:1314
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr ""
 
-#: sadf_misc.c:1285
+#: sadf_misc.c:1316
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr ""
 
-#: sadf_misc.c:1287
+#: sadf_misc.c:1318
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr ""
 
-#: sadf_misc.c:1290
+#: sadf_misc.c:1321
 #, c-format
 msgid "List of activities:\n"
 msgstr ""
 
-#: sadf_misc.c:1301
+#: sadf_misc.c:1332
 msgid "Unknown activity"
 msgstr ""
 
-#: sadf_misc.c:1309
+#: sadf_misc.c:1340
 #, c-format
 msgid " \t[Unknown format]"
 msgstr ""
@@ -556,7 +559,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m | -G ] [ -o JSON ] [ -t ] [ -U ] [ -V ]\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
 "[ -y ] [ -z ]\n"
 msgstr ""
 

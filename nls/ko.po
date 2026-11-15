@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.8.0\n"
+"Project-Id-Version: sysstat 12.8.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2026-06-07 09:07+0200\n"
-"PO-Revision-Date: 2026-06-09 09:05+0900\n"
+"POT-Creation-Date: 2026-11-12 11:45+0100\n"
+"PO-Revision-Date: 2026-11-14 09:49+0900\n"
 "Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
 "Language-Team: Korean <translation-team-ko@googlegroups.com>\n"
 "Language: ko\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 
 #: cifsiostat.c:78 iostat.c:88 mpstat.c:138 sar.c:113 tapestat.c:105
 #, c-format
@@ -28,25 +28,27 @@ msgstr "사용법: %s [ <옵션> ] [ <시간간격> [ <횟수> ] ]\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --debuginfo ]\n"
 msgstr ""
 "옵션:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --debuginfo ]\n"
 
-#: cifsiostat.c:86
+#: cifsiostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 msgstr ""
 "옵션:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
 
-#: cifsiostat.c:584
+#: cifsiostat.c:612
 #, c-format
 msgid "No CIFS filesystems with statistics found\n"
 msgstr "통계 정보가 들어간 CIFS 파일 시스템이 없습니다\n"
@@ -56,7 +58,7 @@ msgstr "통계 정보가 들어간 CIFS 파일 시스템이 없습니다\n"
 msgid "sysstat version %s\n"
 msgstr "sysstat 버전 %s\n"
 
-#: count.c:111 ioconf.c:476 rd_stats.c:86 sa_common.c:2014 sadc.c:739
+#: count.c:111 ioconf.c:478 rd_stats.c:242 sa_common.c:2014 sadc.c:739
 #: sadc.c:802
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -71,16 +73,16 @@ msgstr "너무 많은 프로세서를 처리할 수 없습니다!\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "옵션:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <디렉터리> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <그룹_이름> ] [ -p [ <장치> [,...] | ALL ] ]\n"
 "[ <장치> [...] | ALL ] [ --debuginfo ]\n"
 
@@ -88,20 +90,20 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "옵션:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <디렉터리> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 "[ [ -H ] -g <그룹_이름> ] [ -p [ <장치> [,...] | ALL ] ]\n"
 "[ <장치> [...] | ALL ]\n"
 
-#: iostat.c:2183 sa_common.c:2596
+#: iostat.c:2238 sa_common.c:2632
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "부적절한 영속 장치 이름 형식입니다\n"
@@ -112,14 +114,14 @@ msgid ""
 "Options are:\n"
 "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] [ -P { <cpu_list> | ALL } ]\n"
 msgstr ""
 "옵션:\n"
 "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <노드_목록> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o <JSON> ] [ -P { <CPU_목록> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NSJSON } ] [ -P { <CPU_목록> | ALL } ]\n"
 
-#: mpstat.c:1735 pidstat.c:3530 sar.c:390
+#: mpstat.c:1766 pidstat.c:3564 sar.c:390
 msgid "Average:"
 msgstr "평균:"
 
@@ -135,29 +137,29 @@ msgid ""
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 msgstr ""
 "옵션:\n"
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <사용자이름> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <명령> ] [ -G <프로세스_이름> ]\n"
 "[ -p { <PID> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"
 
 #: pidstat.c:230 sa_common.c:379
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "요청한 활동 내용이 없습니다\n"
 
-#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3938
-#: pr_stats.c:3952 sar.c:392
+#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3935
+#: pr_stats.c:3949 sar.c:392
 msgid "Summary:"
 msgstr "요약:"
 
-#: pr_stats.c:3951
+#: pr_stats.c:3948
 msgid "Last:"
 msgstr "최종:"
 
-#: rd_stats.c:436
+#: rd_stats.c:608
 #, c-format
 msgid "Cannot read %s\n"
 msgstr "%s 대상을 읽어들일 수 없음\n"
@@ -211,16 +213,16 @@ msgstr "부적절한 데이터 읽기\n"
 msgid "Please check if data collecting is enabled\n"
 msgstr "데이터 수집 기능을 사용하고 있는지 확인하십시오\n"
 
-#: sa_common.c:2352
+#: sa_common.c:2355
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "%s 파일에 요청한 활동 정보가 없습니다\n"
 
-#: sa_common.c:3831
+#: sa_common.c:3867
 msgid "Maximum:"
 msgstr "최대:"
 
-#: sa_common.c:3832
+#: sa_common.c:3868
 msgid "Minimum:"
 msgstr "최소:"
 
@@ -306,92 +308,92 @@ msgstr "사용법: %s [ <옵션> ] [ <시간간격> [ <횟수> ] ] [ <데이터�
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
 "[ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "옵션:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <옵션> [,...] ] [ -P { <CPU> [,...] | ALL } ]\n"
 "[ --dev=<장치_목록> ] [ --fs=<파일시스템_목록> ] [ --iface=<인터페이스_목록> ] [ --int=<인터럽트_목록> ]\n"
 "[ -s [ <시작_시간> ] ] [ -e [ <마침_시간> ] ]\n"
-"[ -- <sar_옵션> ]\n"
+"[ -- <SAR_옵션> ]\n"
 
-#: sadf.c:2039
+#: sadf.c:2047
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "PCP 지원을 컴파일하지 않았습니다\n"
 
-#: sadf_misc.c:1244
+#: sadf_misc.c:1275
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "시스템 활동 데이터 파일: %s (%#x)\n"
 
-#: sadf_misc.c:1253
+#: sadf_misc.c:1284
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "정식 sa 데이터파일: %s (%x)\n"
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "no"
 msgstr "no"
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1285
 msgid "yes"
 msgstr "yes"
 
-#: sadf_misc.c:1257
+#: sadf_misc.c:1288
 #, c-format
 msgid "Host: "
 msgstr "호스트: "
 
-#: sadf_misc.c:1267
+#: sadf_misc.c:1298
 #, c-format
 msgid "File date: %s\n"
 msgstr "파일 날짜: %s\n"
 
-#: sadf_misc.c:1270
+#: sadf_misc.c:1301
 #, c-format
 msgid "File time: "
 msgstr "파일 시각: "
 
-#: sadf_misc.c:1275
+#: sadf_misc.c:1306
 #, c-format
 msgid "Timezone: %s\n"
 msgstr "시간대: %s\n"
 
-#: sadf_misc.c:1278
+#: sadf_misc.c:1309
 #, c-format
 msgid "File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 msgstr "파일 구성: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 
-#: sadf_misc.c:1283
+#: sadf_misc.c:1314
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "long int 바이트 크기: %d\n"
 
-#: sadf_misc.c:1285
+#: sadf_misc.c:1316
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "파일에 들어있는 활동 수: %u\n"
 
-#: sadf_misc.c:1287
+#: sadf_misc.c:1318
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr "추가 구조가 들어있습니다: %c\n"
 
-#: sadf_misc.c:1290
+#: sadf_misc.c:1321
 #, c-format
 msgid "List of activities:\n"
 msgstr "활동 목록:\n"
 
-#: sadf_misc.c:1301
+#: sadf_misc.c:1332
 msgid "Unknown activity"
 msgstr "알 수 없는 활동"
 
-#: sadf_misc.c:1309
+#: sadf_misc.c:1340
 #, c-format
 msgid " \t[Unknown format]"
 msgstr " \t[알 수 없는 형식]"
@@ -651,12 +653,14 @@ msgstr "데이터 수집자를 찾을 수 없습니다 (%s)\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
 msgstr ""
 "옵션:\n"
-"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
+"[ -y ] [ -z ]\n"
 
-#: tapestat.c:290
+#: tapestat.c:291
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "통계 정보가 들어간 테이프 드라이브가 없습니다\n"
