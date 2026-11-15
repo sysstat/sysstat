@@ -1,5 +1,54 @@
 Changes:
 
+2026/11/15: Version 12.8.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Yeo Jooho]: Fix security issue with crafted sa datafiles.
+	* [Gabe Dijkstra]: sar/sadf: Fix out-of-bounds write in
+	  check_file_actlst().
+	* sadf: Add NDJSON (Newline Delimited JavaScript Object Notation)
+	  output format.
+	* iostat: Add NDJSON output format.
+	* pidstat: Add NDJSON output format.
+	* mpstat: Add NDJSON outpout format.
+	* cifsiostat: Add NDJSON outpout format.
+	* tapestat: Add NDJSON outpout format.
+	* sadf/pidstat: Escape forbidden characters in JSON output.
+	* sadf: Escape double quotes characters in XML output.
+	* mpstat: Remove unneeded CR in JSON output.
+	* pidstat: Remove unneeded CR when report is interrupted with Ctrl/C.
+	* sar/sadc/sadf: Use 64-bit unsigned int to save flags.
+	* Merge xprintf() and xprintf0() functions.
+	* pidstat: Fix JSON output when PID list becomes empty.
+	* [Mattbat45]: iostat: Fix %util value for groups of disks.
+	* [Hanjinpeng]: sar: Fix min/max values computation for serial lines
+	  statistics.
+	* [Hanjinpeng]: ioconf: Fix buffer overflows when parsing
+	  sysstat.ioconf.
+	* [Hanjinpeng]: common.c: Check pointer before use in extract_wwnid().
+	* [Hanjinpeng]: Fix typos in comments.
+	* [Nathan Scott]: sar/sadf: Allow more than 99 days back in day
+	  offset argument.
+	* [Nathan Scott]: rd_stats.c: Don't silently drop CPUs from interrupt
+	  statistics.
+	* [Sagar Narayan]: iostat: Fix stack-use-after-return with options -N
+	  and -j.
+	* [Sagar Narayan]: simtest: Compute yesterday's date in GMT.
+	* [Sagar Narayan]: simtest: Run sadf tests in GMT.
+	* [Sagar Narayan]: simtest: Don't depend on the environment variables
+	  of the caller.
+	* [Sagar Narayan]: simtest: Add test for negative sensor values in XML
+	  output.
+	* simtest: Display number of failed tests in do_test script.
+	* simtest: Make extra tests runnable in out-of-tree environment.
+	* [Anton Samartsev]: Update RPM spec file.
+	* [Mithil Mhatre]: Explain pswpin/pswpout with relation to RAM and
+	  swap space in sar manual page.
+	* common.c: Fix a gcc warning.
+	* configure: Small fix and update.
+	* Non-regression tests updated. New tests added.
+	* sadf, iostat, mpstat, pidstat, cifsiostat and tapestat manual pages
+	  updated.
+	* NLS translations updated.
+
 2026/08/28: Version 12.8.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Agenticode]: sadc: Read /proc/stat once per collection cycle.
 	* rd_stats.c: Rework functions to read /proc files once.

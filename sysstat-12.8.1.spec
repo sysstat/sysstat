@@ -1,6 +1,6 @@
 Summary: 	Collection of performance monitoring tools for Linux
 Name: 		sysstat
-Version: 	12.8.0
+Version: 	12.8.1
 Release: 	1
 License: 	GPL-2.0-or-later
 Group:		Applications/System
@@ -88,4 +88,4 @@ rm -rf $RPM_BUILD_ROOT
 /etc/rc3.d/S01sysstat
 /etc/rc5.d/S01sysstat
 %config(noreplace) %attr(0644,root,root) /etc/cron.d/sysstat
-%{_unitdir}/sysstat*
+#%{_unitdir}/sysstat*
