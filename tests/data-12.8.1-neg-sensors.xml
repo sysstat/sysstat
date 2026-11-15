@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysstat
+xmlns="https://sysstat.github.io"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.xsd">
+	<sysdata-version>3.18</sysdata-version>
+	<host nodename="SYSSTAT.TEST">
+		<sysname>Linux</sysname>
+		<release>1.2.3-TEST</release>
+		<machine>x86_64</machine>
+		<number-of-cpus>9</number-of-cpus>
+		<file-date>2019-04-18</file-date>
+		<file-utc-time>13:20:09</file-utc-time>
+		<timezone>GMT</timezone>
+		<statistics>
+			<timestamp date="2019-04-18" time="13:20:10" tz="UTC" interval="31">
+				<power-management>
+					<temperature unit="degree Celsius">
+						<temp number="1" degC="-5.50" percent-temp="-6.88" device="simtest-virtual-0"/>
+						<temp number="2" degC="-0.15" percent-temp="0.00" device="simtest-virtual-0"/>
+					</temperature>
+					<voltage-input unit="V">
+						<in number="0" inV="-12.00" percent-in="0.00" device="simtest-virtual-0"/>
+						<in number="1" inV="1.00" percent-in="-100.00" device="simtest-virtual-0"/>
+					</voltage-input>
+				</power-management>
+			</timestamp>
+		</statistics>
+		<restarts>
+		</restarts>
+	</host>
+</sysstat>
