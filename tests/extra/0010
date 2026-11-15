@@ -1,4 +1,4 @@
-if [ ! -x configure -o ! -x do_test -o ! -x iconfig ]; then
+if [ ! -x ${T_SRCDIR}/configure -o ! -x ${T_SRCDIR}/do_test -o ! -x ${T_SRCDIR}/iconfig ]; then
 	echo Not executable
 	exit 1
 fi

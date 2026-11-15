@@ -825,6 +825,11 @@ cr_dir:
 
 testcomp: tests/ini/inisar sa32bit
 
+xcr_dir:
+	if [ ! -d tests/extra ]; then \
+		mkdir -p tests/extra; \
+	fi
+
 ifeq ($(TGLIB32),yes)
 sa32bit: DFLAGS += -DARCH32
 
@@ -854,7 +859,7 @@ simtest: all cr_dir testcomp
 
 extratest: DFLAGS += $(TFLAGS)
 
-extratest: all
+extratest: all xcr_dir
 	@$(foreach x, $(EXTRALIST), $(MAKE) X=$x extraunit || exit;)
 	@echo Extra simulation tests: Success!
 
