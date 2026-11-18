@@ -1,0 +1,10 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sadf reads from PCP archive in XML format
+	LC_ALL=C TZ=GMT ./sadf -x tests/pcpar -- -u > tests/out.sadf-pcp-x.tmp 2>/dev/null
+	grep -q "sysstat" tests/out.sadf-pcp-x.tmp || exit 1
+	grep -q "cpu-load" tests/out.sadf-pcp-x.tmp || exit 1
+else
+	echo Skipped
+	touch tests/SKIPPED
+fi

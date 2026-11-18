@@ -1,0 +1,8 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sadf -d (CSV/db format) reading from PCP archive
+	LC_ALL=C TZ=GMT ./sadf -d tests/pcpar -- -u > tests/out.sadf-pcp-d.tmp 2>/dev/null
+	grep -q "SYSSTAT.TEST\|%user\|%idle" tests/out.sadf-pcp-d.tmp || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi

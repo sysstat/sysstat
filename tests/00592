@@ -1,0 +1,11 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sar reads from PCP archive: check header and non-empty CPU stats
+	LC_ALL=C TZ=GMT ./sar -u -f tests/pcpar > tests/out.sar-pcp-u.tmp 2>/dev/null
+	grep -q "SYSSTAT.TEST" tests/out.sar-pcp-u.tmp || exit 1
+	grep -q "CPU.*%user.*%idle" tests/out.sar-pcp-u.tmp || exit 1
+	grep -q "all" tests/out.sar-pcp-u.tmp || exit 1
+else
+	echo Skipped
+	touch tests/SKIPPED
+fi

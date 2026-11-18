@@ -6,7 +6,7 @@ sadc \- System activity data collector.
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sadc [ \-C
 .I comment
-.BI "] [ \-D ] [ \-F ] [ \-f ] [ \-L ] [ \-V ] [ \-S { " "keyword" "[,...] | ALL | XALL } ] ["
+.BI "] [ \-D ] [ \-F ] [ \-f ] [ \-L ] [ \-O { sa+pcp | pcp }[=\fIarchive\fP] ] [ \-V ] [ \-S { " "keyword" "[,...] | ALL | XALL } ] ["
 .IB "interval " "[ " "count " "] ] [ " "outfile " "]"
 
 .SH DESCRIPTION
@@ -113,6 +113,84 @@ might still be running when
 starts a new one. Without locking, this situation can result in a corrupted system
 activity file.
 .TP
+.BI "\-O { sa+pcp | pcp }[=" "archive" "]"
+Write performance data to a PCP (Performance Co-Pilot) archive in addition
+to, or instead of, the native sysstat binary format.
+This option requires PCP 7.2.0 or later (compiled with
+.BR HAVE_PMI_APPEND ).
+.RS
+.TP
+.B sa+pcp
+Write data to
+.B both
+the native sysstat format
+.RI "(" "outfile" ")"
+and a PCP archive.
+If a PCP write error occurs,
+.B sadc
+continues writing only the native format.
+The PCP archive is written first so the native file has a more recent
+modification time, which
+.BR sar (1)
+uses for auto-detection.
+.TP
+.B pcp
+Write data to a PCP archive
+.B only;
+no native sysstat file is created.
+A PCP write error is fatal in this mode.
+.RE
+.PP
+The PCP archive shares the same base path as the native sa output file.
+PCP appends its own suffixes so the files coexist without conflict
+(e.g. with output file
+.IR "@SA_DIR@/sa28" ,
+the PCP archive is
+.IR "@SA_DIR@/sa28.meta" ", " "@SA_DIR@/sa28.index" " and " "@SA_DIR@/sa28.0" ").
+.PP
+Each PCP archive records
+.BR sadc.version ,
+.BR sadc.activities ,
+.BR sadc.interval ,
+and
+.B sadc.comment
+metrics identifying the tool and its configuration, plus a
+.B {"sadc":true}
+context label for easy identification via
+.BR pminfo (1).
+.PP
+When PCP archive output is active,
+.B sadc
+also reads
+.I @SYSCONFIG_DIR@/sysstat.pcpconf
+to collect metrics from any installed PCP DSO PMDA via a local PMDA context
+(see
+.BR pmSpecLocalPMDA (3)
+and
+.BR sysstat.pcpconf (5)).
+The default configuration collects per-process metrics (equivalent to
+.BR pidstat (1)),
+CIFS filesystem statistics (equivalent to
+.BR cifsiostat (1)),
+and tape drive statistics (equivalent to
+.BR tapestat (1))
+at a 15-second interval.
+Collection frequency is governed by the
+.B interval
+key in
+.I sysstat.pcpconf
+(default: 15 seconds minimum gap between consecutive fetches within a
+long-running sadc process; see
+.BR sysstat.pcpconf (5)
+for the full semantics).
+All local metrics are stored in the same PCP archive as the system-wide
+metrics and can be replayed using the
+.B \-a
+option of the respective sysstat tool.
+The
+.B SYSSTAT_PCPCONF
+environment variable overrides the configuration file path.
+.TP
 .BI "\-S { " "keyword" "[,...] | ALL | XALL }"
 Possible keywords are
 .BR "DISK" ", " "INT" ", " "IPV6" ", " "POWER" ", " "SNMP" ", " "XDISK" ", " "ALL " "and " "XALL" "."
@@ -139,6 +217,19 @@ and later. The
 .B XALL
 keyword is equivalent to specifying all the keywords above (including
 keyword extensions) and therefore all possible activities are collected.
+.IP
+In addition to the built-in keywords, any metric group name defined in
+.BR sysstat.pcpconf (5)
+may be used (e.g.\&
+.BR "\-S PROC" ", " "\-S TAPE" ")."
+Group names are case-insensitive.
+The
+.BR ALL " and " XALL
+keywords also enable all configured metric groups.
+A group can be disabled by prefixing its name with
+.B \-
+(e.g.\&
+.BR "\-S XALL,\-NUMA" ")."
 .IP
 Important note: The activities (including optional ones) saved in an existing
 data file prevail over those selected with option
@@ -173,6 +264,17 @@ Write 10 records of one second intervals to the
 .B @SA_LIB_DIR@/sadc \-C """Backup Start"" /tmp/datafile
 Insert the comment "Backup Start" into the file
 .IR "/tmp/datafile" "."
+.TP
+.B @SA_LIB_DIR@/sadc \-O pcp \-S XALL 1 10 /var/log/sa/sa28
+Write 10 records of one second intervals to a PCP archive in
+.IR "/var/log/sa/pcp28/" "."
+No native sysstat file is created.
+.TP
+.B @SA_LIB_DIR@/sadc \-O sa+pcp \-S XALL 1 10 /var/log/sa/sa28
+Write 10 records to both the native
+.I /var/log/sa/sa28
+file and a PCP archive in
+.IR "/var/log/sa/pcp28/" "."
 
 .SH BUGS
 .RI "The " "/proc"
@@ -191,6 +293,27 @@ assumes that you are using at least a 2.6 kernel.
 The standard system activity daily data files and their default location.
 .IR "YYYY " "stands for the current year, " "MM " "for the current month and " "DD"
 for the current day.
+.RE
+.I @SA_DIR@/saDD.meta
+.br
+.I @SA_DIR@/saDD.index
+.br
+.I @SA_DIR@/saDD.0
+.RS
+PCP archive files written alongside the native sa file when
+.B -O pcp
+or
+.B -O sa+pcp
+is active.
+.RE
+.I @SYSCONFIG_DIR@/sysstat.pcpconf
+.RS
+Local PMDA metric configuration for PCP archive output.
+Specifies the sampling interval, optional additional PMDAs to load,
+and the list of metric names to record alongside the standard
+.B sadc
+statistics.  See
+.BR sysstat.pcpconf (5).
 .RE
 .IR "/proc " "and " "/sys " "contain various files with system statistics."
 
