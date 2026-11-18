@@ -319,7 +319,8 @@ int ioc_init(void)
 		case '%':
 			/* Keep room for the "%s" string appended below */
 			strncpy(blkp->dfmt, dfmt + 1, sizeof(blkp->dfmt) - 3);
-			/* fallthrough to next case */
+			blkp->dfmt[sizeof(blkp->dfmt) - 3] = '\0';
+			/* fall through */
 		case 'd':
 			blkp->cconv = ioc_ito10;
 			strcat(blkp->dfmt, "%s");
