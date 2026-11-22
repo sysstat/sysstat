@@ -10,6 +10,10 @@ COMPRESSAFTER=@COMPRESSAFTER@
 
 # Parameters for the system activity data collector (see sadc manual page)
 # which are used for the generation of log files.
+# To enable PCP archive output, add -O pcp (PCP archives only) or -O sa+pcp
+# (both formats).  For ideal results with PCP, also use -D (long filenames)
+# and -S XALL (all optional activities).  For example:
+#   SADC_OPTIONS="-S XALL -D -O pcp"
 SADC_OPTIONS="@COLLECT_ALL@ @SADC_OPT@"
 
 # Directory where sa and sar files are saved. The directory must exist.

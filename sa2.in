@@ -58,7 +58,7 @@ then
        ENDIR=@bindir@
 fi
 
-[ -f "${DFILE}" ] || exit 0
+[ -f "${DFILE}" ] || [ -f "${DFILE}.index" ] || exit 0
 cd ${ENDIR}
 if [ x${REPORTS} != xfalse ]
 then
@@ -76,5 +76,39 @@ UNCOMPRESSED_SAFILES_REGEX='/sar?[0-9]{2,8}$'
 find "${SA_DIR}" -type f -mtime +${COMPRESSAFTER} \
 	| grep -E "${UNCOMPRESSED_SAFILES_REGEX}" \
 	| xargs -r "${ZIP}" > /dev/null
+
+# PCP archive management (flat-file layout: saDD.0 .meta .index alongside saDD).
+# CURRENTFILE is yesterday (for the sar report); the active archive is today's.
+if [ "${LONG_NAME}" = "y" ]; then
+	TODAYFILE=sa`date +%Y%m%d`
+else
+	TODAYFILE=sa`date +%d`
+fi
+
+PCP_VOLUME_REGEX='/sa[0-9]{2,8}\.[0-9]+$'
+PCP_ARCHIVE_REGEX='/sa[0-9]{2,8}\.(meta|index|[0-9]+)(\.(Z|gz|bz2|xz|lz|lzo|zst))?$'
+
+# Remove PCP archive files older than HISTORY days
+find "${SA_DIR}" -type f -mtime +${HISTORY} \
+	| grep -E "${PCP_ARCHIVE_REGEX}" \
+	| xargs -r rm -f
+
+# Compress completed PCP archives (everything except today's active file).
+# Filename matching avoids the mtime race that delayed compression by a day.
+# pmlogcompress is preferred (part of pcp package) but may not be installed
+# when only pcp-libs is present; fall back to compressing volumes with ZIP.
+if command -v pmlogcompress >/dev/null 2>&1; then
+	find "${SA_DIR}" -type f -name "sa[0-9]*.meta" \
+		! -name "${TODAYFILE}.*" \
+		| while read meta_file; do
+			pmlogcompress "${meta_file%.meta}" > /dev/null 2>&1
+		done
+else
+	find "${SA_DIR}" -type f ! -name "${TODAYFILE}.*" \
+		! -name "*.gz" ! -name "*.xz" ! -name "*.zst" \
+		! -name "*.bz2" ! -name "*.Z" ! -name "*.lz" ! -name "*.lzo" \
+		| grep -E "${PCP_VOLUME_REGEX}" \
+		| xargs -r "${ZIP}" > /dev/null
+fi
 
 exit 0

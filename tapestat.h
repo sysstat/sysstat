@@ -19,6 +19,7 @@
 #define T_D_GIGABYTES		0x00010
 #define T_D_ZERO_OMIT		0x00020
 #define T_D_UNIT		0x00040
+#define T_D_PCP_ARCHIVE		0x00080
 
 #define DISPLAY_TIMESTAMP(m)		(((m) & T_D_TIMESTAMP)       == T_D_TIMESTAMP)
 #define DISPLAY_KILOBYTES(m)		(((m) & T_D_KILOBYTES)       == T_D_KILOBYTES)
@@ -117,5 +118,13 @@ struct calc_stats {
         uint64_t all_pct_wait;
         uint64_t resids_per_second;
 };
+
+extern struct tape_stats *tape_old_stats;
+extern struct tape_stats *tape_new_stats;
+extern int                max_tape_drives;
+extern uint64_t           xflags;
+extern uint64_t           flags;
+
+void write_stats(struct tm *rectime);
 
 #endif  /* _TAPESTAT_H */

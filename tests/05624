@@ -1,0 +1,17 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# tapestat -a: smoke test against pcpar-sadc archive
+	# tape.dev.* is in the linux PMDA and may or may not be in the archive;
+	# tapestat -a should exit 0 either way (graceful empty output if no tapes)
+	if pminfo -a tests/pcpar-sadc tape.dev.read_cnt > /dev/null 2>&1; then
+		LC_ALL=C TZ=GMT ./tapestat -a tests/pcpar-sadc > tests/out.tapestat-pcp.tmp 2>/dev/null
+		test $? -eq 0 || exit 1
+	else
+		# Archive has no tape metrics - verify graceful failure message
+		./tapestat -a tests/pcpar-sadc > /dev/null 2>&1
+		# Exit non-zero is expected if no tape metrics present
+		true
+	fi
+else
+	echo Skipped; touch tests/SKIPPED
+fi

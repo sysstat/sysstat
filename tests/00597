@@ -1,0 +1,8 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sar -n DEV (network interfaces) reading from PCP archive
+	LC_ALL=C TZ=GMT ./sar -n DEV -f tests/pcpar > tests/out.sar-pcp-n.tmp 2>/dev/null
+	grep -q "IFACE\|rxpck\|txpck" tests/out.sar-pcp-n.tmp || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi

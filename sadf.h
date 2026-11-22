@@ -208,4 +208,28 @@ void svg_display_loop
 	(int, char *, struct file_activity *, struct file_magic *,
 	 struct tstamp_ext *, void *);
 
+/* Globals from sadf.c / activity.c used by sadf_misc.c */
+extern struct activity	*act[];
+extern unsigned int	format;
+extern unsigned int	f_position;
+extern long		count;
+extern struct file_header	file_hdr;
+extern char		my_tzname[];
+extern struct tstamp_ext	tm_start, tm_end;
+extern struct report_format	*fmt[];
+extern unsigned int	id_seq[];
+extern struct record_header	record_hdr[];
+extern unsigned int	canvas_height;
+
+time_t get_time_ref(void);
+
+/* generic_write_stats() is defined in sadf.c */
+int generic_write_stats(int, enum time_mode, enum time_mode, int, long *,
+			void *, struct tstamp_ext *, int, unsigned int);
+
+#ifdef HAVE_PCP
+/* PCP archive read path for sadf */
+void read_stats_from_pcpfile_sadf(int ctxid, char *from_file);
+#endif
+
 #endif  /* _SADF_H */

@@ -86,6 +86,58 @@ used for distribution packaging.
 
 Sysstat development can be tracked on [GitHub](https://github.com/sysstat/sysstat).
 
+### PCP (Performance Co-Pilot) Archive Support
+
+#### Reading PCP archives
+
+When built with PCP support (`HAVE_PCP`, requires PCP >= 5.x), all sysstat
+tools gain the ability to replay statistics from PCP archives:
+
+| Tool        | Option          | Description |
+|-------------|-----------------|-------------|
+| `sar`       | `-a <archive>`  | Read from PCP archive explicitly (also auto-detected via `-f`) |
+| `sadf`      | `-f <archive>`  | Convert PCP archive to any sadf output format |
+| `iostat`    | `-a <archive>`  | Replay disk I/O statistics |
+| `mpstat`    | `-a <archive>`  | Replay CPU statistics |
+| `pidstat`   | `-a <archive>`  | Replay per-process statistics |
+| `tapestat`  | `-a <archive>`  | Replay tape drive statistics |
+| `cifsiostat`| `-a <archive>`  | Replay CIFS filesystem statistics |
+
+#### Writing PCP archives
+
+When built with PCP write support (`HAVE_PMI_APPEND`, requires PCP >= 7.2.0),
+`sadc` can write PCP archives directly alongside or instead of native sa files:
+
+```sh
+# In /etc/sysconfig/sysstat — write both native and PCP archives:
+SADC_OPTIONS="-S XALL -D -O sa+pcp"
+
+# Or PCP archives only:
+SADC_OPTIONS="-S XALL -D -O pcp"
+```
+
+PCP archives share the sa output base path (e.g. `/var/log/sa/sa18.meta`,
+`/var/log/sa/sa18.index`, `/var/log/sa/sa18.0`) alongside the native sa file,
+with no conflict since PCP appends its own suffixes.
+
+Beyond the standard system-wide metrics that `sar` and `sadf`
+already record, `sadc` also collects metrics from any installed PCP DSO PMDA
+via a local PMDA context, configured in `/etc/sysconfig/sysstat.pcpconf`.
+
+The default configuration archives:
+
+- **Per-process metrics** — equivalent to `pidstat` output (CPU, memory, I/O,
+  context switches per process), collected from the PCP `proc` PMDA.
+- **CIFS filesystem statistics** — equivalent to `cifsiostat` output, collected
+  from the PCP `cifs` PMDA.
+- **Tape drive statistics** — equivalent to `tapestat` output, collected from
+  the PCP `linux` PMDA.
+
+Any installed PCP DSO PMDA metric can be added to the collection by listing it
+in `/etc/sysconfig/sysstat.pcpconf`.
+
+See `sadc(8)`, `sysstat(5)`, and `sysstat.pcpconf(5)` for full details.
+
 ### Installation
 
 #### Install from RHEL/Fedora/CentOS
