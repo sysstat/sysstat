@@ -859,6 +859,8 @@ simtest: all cr_dir testcomp
 
 extratest: DFLAGS += $(TFLAGS)
 
+extratest: export T_SRCDIR := @srcdir@
+
 extratest: all xcr_dir
 	@$(foreach x, $(EXTRALIST), $(MAKE) X=$x extraunit || exit;)
 	@echo Extra simulation tests: Success!
