@@ -9,7 +9,7 @@
 #include "sa.h"
 
 /* DTD version for XML output */
-#define XML_DTD_VERSION	"3.18"
+#define XML_DTD_VERSION	"3.19"
 
 /* Various constants */
 enum {
