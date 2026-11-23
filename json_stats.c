@@ -2057,11 +2057,11 @@ __print_funct_t json_print_pwr_fan_stats(struct activity *a, int curr, int tab,
 		xprintf(bh | NO_CR, tab,
 			"{\"number\": %d, "
 			"\"rpm\": %llu, "
-			"\"drpm\": %llu, "
+			"\"drpm\": %lld, "
 			"\"device\": \"%s\"}",
 			i + 1,
 			(unsigned long long) spc->rpm,
-			(unsigned long long) (spc->rpm - spc->rpm_min),
+			(long long) (spc->rpm - spc->rpm_min),
 			spc->device);
 	}
 

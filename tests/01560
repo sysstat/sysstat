@@ -1,0 +1,1 @@
+LC_ALL=C ./sadf -x ${T_SRCDIR}/tests/data-12.8.2-neg-drpm -- -m FAN | grep 'drpm="-1000"' >/dev/null && LC_ALL=C ./sadf -j ${T_SRCDIR}/tests/data-12.8.2-neg-drpm -- -m FAN | grep '"drpm": -1000,' >/dev/null

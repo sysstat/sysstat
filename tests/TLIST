@@ -400,6 +400,8 @@ NOTES:
 01550	LC_ALL=C TZ=GMT ./sadf -x tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-x.tmp
 01557	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
 01559	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
+01560	LC_ALL=C ./sadf -x tests/data-12.8.2-neg-drpm -- -m FAN | grep 'drpm="-1000"' >/dev/null && LC_ALL=C ./sadf -j tests/data-12.8.2-neg-drpm -- -m FAN | grep '"drpm": -1000,' >/dev/null
+	[Datafile with a fan running below its low limit]
 01575	LC_ALL=C TZ=GMT ./sar -w -f tests/data-ssr.tmp > tests/out.sar-ssr.tmp
 01577	LC_ALL=C TZ=GMT ./sar -A -f tests/data-ssr.tmp >/dev/null
 01580	LC_ALL=C TZ=GMT tests/32bits/sar32 -w -f tests/data-ssr.tmp > tests/out2.sar-ssr.tmp

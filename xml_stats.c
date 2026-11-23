@@ -1855,10 +1855,10 @@ __print_funct_t xml_print_pwr_fan_stats(struct activity *a, int curr, int tab,
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
-		xprintf(0, tab, "<fan number=\"%d\" rpm=\"%llu\" drpm=\"%llu\" device=\"%s\"/>",
+		xprintf(0, tab, "<fan number=\"%d\" rpm=\"%llu\" drpm=\"%lld\" device=\"%s\"/>",
 			i + 1,
 			(unsigned long long) spc->rpm,
-			(unsigned long long) (spc->rpm - spc->rpm_min),
+			(long long) (spc->rpm - spc->rpm_min),
 			spc->device);
 	}
 
